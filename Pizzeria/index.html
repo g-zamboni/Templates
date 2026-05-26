@@ -20,7 +20,7 @@
       --text:        #2c1a0e;
       --text-muted:  #7a5c42;
       --hero-overlay: rgba(30,15,5,0.55);
-      --hero-img: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=80');
+      --hero-img: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1600&q=80');
       --section-radius: 18px;
       --font-display: 'Satisfy', cursive;
       --font-head:    'Playfair Display', serif;
@@ -1033,19 +1033,19 @@
   <script>
     /* ── Menu data ── */
     const pizzas = [
-      { name: "Marguerite",    price: 10, desc: "Tomate, origan, emmental" },
-      { name: "Reine",         price: 11, desc: "Tomate, jambon cuit, champignons, emmental" },
-      { name: "Espagnole",     price: 14, desc: "Tomate, poivrons, oignons, chorizo, emmental" },
-      { name: "Italienne",     price: 14, desc: "Tomate, mozzarella, jambon cru, parmesan, roquette, crème balsamique" },
-      { name: "Quercynoise",   price: 15, desc: "Tomate, oignons, magret séché, gésiers, noix, emmental" },
-      { name: "Calzone",       price: 14, desc: "Tomate, champignon, jambon cuit, œuf, fromage" },
-      { name: "Orientale",     price: 14, desc: "Tomate, oignons, merguez, raz el hanout, fromage, roquette, crème balsamique" },
-      { name: "4 Saisons",     price: 14, desc: "Tomate, champignons, poivrons, oignons, courgette, fromage, crème balsamique" },
-      { name: "Napolitaine",   price: 14, desc: "Tomate, oignons, anchois, fromage, olives noires, câpres, roquette" },
-      { name: "4 Fromages",    price: 14, desc: "Crème fraîche, chèvre, reblochon, bleu des causses, roquette, emmental, crème balsamique" },
-      { name: "Cabécou Miel",  price: 14, desc: "Crème fraîche, chèvre, cabécou, miel, roquette, crème balsamique" },
-      { name: "Tartiflette",   price: 15, desc: "Crème fraîche, oignons, lardons, pommes grenailles, reblochon, roquette, crème balsamique" },
-      { name: "Saumon",        price: 14, desc: "Crème fraîche, fromage, saumon fumé, aneth, roquette, crème balsamique" },
+      { name: "Marguerite",    price: 10, desc: "🍅 Tomate · 🌿 Origan · 🧀 Emmental" },
+      { name: "Reine",         price: 11, desc: "🍅 Tomate · 🥩 Jambon cuit · 🍄 Champignons · 🧀 Emmental" },
+      { name: "Espagnole",     price: 14, desc: "🍅 Tomate · 🫑 Poivrons · 🧅 Oignons · 🌶️ Chorizo · 🧀 Emmental" },
+      { name: "Italienne",     price: 14, desc: "🍅 Tomate · 🧈 Mozzarella · 🍖 Jambon cru · 🧀 Parmesan · 🌱 Roquette · 🍶 Crème balsamique" },
+      { name: "Quercynoise",   price: 15, desc: "🍅 Tomate · 🧅 Oignons · 🦆 Magret séché · 🫀 Gésiers · 🌰 Noix · 🧀 Emmental" },
+      { name: "Calzone",       price: 14, desc: "🍅 Tomate · 🍄 Champignons · 🥩 Jambon cuit · 🥚 Œuf · 🧀 Fromage" },
+      { name: "Orientale",     price: 14, desc: "🍅 Tomate · 🧅 Oignons · 🌶️ Merguez · 🫚 Raz el hanout · 🧀 Fromage · 🌱 Roquette · 🍶 Crème balsamique" },
+      { name: "4 Saisons",     price: 14, desc: "🍅 Tomate · 🍄 Champignons · 🫑 Poivrons · 🧅 Oignons · 🥒 Courgette · 🧀 Fromage · 🍶 Crème balsamique" },
+      { name: "Napolitaine",   price: 14, desc: "🍅 Tomate · 🧅 Oignons · 🐟 Anchois · 🧀 Fromage · 🫒 Olives noires · 🌿 Câpres · 🌱 Roquette" },
+      { name: "4 Fromages",    price: 14, desc: "🥛 Crème fraîche · 🐐 Chèvre · 🧀 Reblochon · 🧀 Bleu des Causses · 🌱 Roquette · 🧀 Emmental · 🍶 Crème balsamique" },
+      { name: "Cabécou Miel",  price: 14, desc: "🥛 Crème fraîche · 🐐 Chèvre · 🧀 Cabécou · 🍯 Miel · 🌱 Roquette · 🍶 Crème balsamique" },
+      { name: "Tartiflette",   price: 15, desc: "🥛 Crème fraîche · 🧅 Oignons · 🥓 Lardons · 🥔 Pommes grenailles · 🧀 Reblochon · 🌱 Roquette · 🍶 Crème balsamique" },
+      { name: "Saumon",        price: 14, desc: "🥛 Crème fraîche · 🧀 Fromage · 🐟 Saumon fumé · 🌿 Aneth · 🌱 Roquette · 🍶 Crème balsamique" },
     ];
 
     /* ── Cart ── */
