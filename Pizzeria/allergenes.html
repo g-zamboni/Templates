@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allergènes – Pizz'aromates</title>
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:         #f5ede0;
+      --bg2:        #ede0ce;
+      --surface:    #fff9f2;
+      --primary:    #b83b1e;
+      --accent:     #c8924a;
+      --text:       #2c1a0e;
+      --text-muted: #7a5c42;
+      --radius:     14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--text);
+      padding: 18px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Satisfy', cursive;
+      font-size: 26px;
+      color: #fff;
+      text-decoration: none;
+    }
+    .nav-back {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ── Hero bande ── */
+    .page-hero {
+      background: var(--bg2);
+      padding: 60px 60px 48px;
+      border-bottom: 3px solid var(--accent);
+    }
+    .page-eyebrow {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .page-intro {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 680px;
+      line-height: 1.7;
+    }
+
+    /* ── Alerte ── */
+    .alert {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding: 0 40px;
+    }
+    .alert-box {
+      background: #fff8ee;
+      border: 2px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-size: 14px;
+      color: #7a5010;
+      line-height: 1.6;
+    }
+    .alert-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .alert-box strong { color: #5a3800; }
+
+    /* ── Contenu ── */
+    .content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 40px 100px;
+    }
+
+    /* ── Légende allergènes ── */
+    .allergens-legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 50px;
+    }
+    .allergen-item {
+      background: var(--surface);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .allergen-num {
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .allergen-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .allergen-detail {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ── Section titre ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .divider {
+      width: 40px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-bottom: 30px;
+    }
+
+    /* ── Tableau ── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--surface);
+    }
+    thead tr {
+      background: var(--text);
+      color: #fff;
+    }
+    thead th {
+      padding: 12px 10px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    thead th.col-pizza {
+      text-align: left;
+      padding-left: 20px;
+      min-width: 140px;
+    }
+    thead th.col-price {
+      text-align: right;
+      padding-right: 14px;
+      min-width: 70px;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--bg2);
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg); }
+    tbody tr:nth-child(even) { background: var(--bg2); }
+    tbody tr:nth-child(even):hover { background: var(--bg); }
+    td {
+      padding: 11px 10px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    td.col-pizza {
+      text-align: left;
+      padding-left: 20px;
+    }
+    td.col-price {
+      text-align: right;
+      padding-right: 14px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .pizza-name {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .pizza-base {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── Présence allergène ── */
+    .dot-yes {
+      display: inline-block;
+      width: 18px; height: 18px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+    .dot-maybe {
+      display: inline-block;
+      width: 18px; height: 18px;
+      background: var(--accent);
+      border-radius: 4px;
+    }
+    .dot-no { color: var(--text-muted); font-size: 13px; }
+
+    /* ── Légende tableau ── */
+    .table-legend {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      align-items: center;
+    }
+    .table-legend-item { display: flex; align-items: center; gap: 8px; }
+
+    /* ── Note bas ── */
+    .bottom-note {
+      background: var(--surface);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 10px 10px 0;
+      padding: 18px 22px;
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .bottom-note strong { color: var(--text); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      padding: 28px 40px;
+      font-size: 12px;
+    }
+    footer a { color: rgba(255,255,255,0.45); text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .page-hero { padding: 40px 20px 32px; }
+      .alert, .content { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="pizzaromates.html" class="nav-logo">Pizz'aromates</a>
+    <a href="pizzaromates.html" class="nav-back">← Retour au site</a>
+  </nav>
+
+  <div class="page-hero">
+    <p class="page-eyebrow">Informations nutritionnelles</p>
+    <h1 class="page-title">Liste des allergènes</h1>
+    <p class="page-intro">
+      Conformément au règlement européen (UE) n°1169/2011, nous vous informons de la présence des 14 allergènes majeurs dans nos pizzas. Cette liste est mise à jour régulièrement — n'hésitez pas à nous interroger directement.
+    </p>
+  </div>
+
+  <div class="alert">
+    <div class="alert-box">
+      <span class="alert-icon">⚠️</span>
+      <div>
+        <strong>Risque de contamination croisée.</strong> Nos pizzas sont préparées dans un atelier manipulant l'ensemble de ces allergènes. Malgré toutes les précautions prises, une contamination croisée ne peut être totalement exclue. En cas d'allergie sévère, merci de nous contacter avant de commander.
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Légende des 14 allergènes -->
+    <p class="section-label">✦ Référentiel</p>
+    <h2 class="section-title">Les 14 allergènes majeurs</h2>
+    <div class="divider"></div>
+    <div class="allergens-legend">
+      <div class="allergen-item"><div class="allergen-num">1</div><div><div class="allergen-name">Gluten</div><div class="allergen-detail">Blé, seigle, orge…</div></div></div>
+      <div class="allergen-item"><div class="allergen-num">2</div><div><div class="allergen-name">Crustacés</div><div class="allergen-detail">Crevettes, homard…</div></div></div>
+      <div class="allergen-item"><div class="allergen-num">3</div><div><div class="allergen-name">Œufs</div><div class="allergen-detail"></div></div></div>
+      <div class="allergen-item"><div class="allergen-num">4</div><div><div class="allergen-name">Poissons</div><div class="allergen-detail"></div></div></div>
+      <div class="allergen-item"><div class="allergen-num">5</div><div><div class="allergen-name">Arachides</div><div class="allergen-detail">Cacahuètes</div></div></div>
+      <div class="allergen-item"><div class="allergen-num">6</div><div><div class="allergen-name">Soja</div><div class="allergen-detail"></div></div></div>
+      <div class="allergen-item"><div class="allergen-num">7</div><div><div class="allergen-name">Lait</div><div class="allergen-detail">Lactose inclus</div></div></div>
+      <div class="allergen-item"><div class="allergen-num">8</div><div><div class="allergen-name">Fruits à coque</div><div class="allergen-detail">Noix, noisettes…</div></div></div>
+      <div class="allergen-item"><div class="allergen-num">9</div><div><div class="allergen-name">Céleri</div><div class="allergen-detail"></div></div></div>
+      <div class="allergen-item"><div class="allergen-num">10</div><div><div class="allergen-name">Moutarde</div><div class="allergen-detail"></div></div></div>
+      <div class="allergen-item"><div class="allergen-num">11</div><div><div class="allergen-name">Sésame</div><div class="allergen-detail"></div></div></div>
+      <div class="allergen-item"><div class="allergen-num">12</div><div><div class="allergen-name">Sulfites</div><div class="allergen-detail">SO₂ > 10 mg/kg</div></div></div>
+      <div class="allergen-item"><div class="allergen-num">13</div><div><div class="allergen-name">Lupin</div><div class="allergen-detail"></div></div></div>
+      <div class="allergen-item"><div class="allergen-num">14</div><div><div class="allergen-name">Mollusques</div><div class="allergen-detail">Escargots, calmars…</div></div></div>
+    </div>
+
+    <!-- Tableau pizzas × allergènes -->
+    <p class="section-label">✦ Par pizza</p>
+    <h2 class="section-title">Présence par pizza</h2>
+    <div class="divider"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-pizza">Pizza</th>
+            <th class="col-price">Prix</th>
+            <th title="Gluten">1</th>
+            <th title="Crustacés">2</th>
+            <th title="Œufs">3</th>
+            <th title="Poissons">4</th>
+            <th title="Arachides">5</th>
+            <th title="Soja">6</th>
+            <th title="Lait">7</th>
+            <th title="Fruits à coque">8</th>
+            <th title="Céleri">9</th>
+            <th title="Moutarde">10</th>
+            <th title="Sésame">11</th>
+            <th title="Sulfites">12</th>
+            <th title="Lupin">13</th>
+            <th title="Mollusques">14</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 1=Gluten 2=Crustacés 3=Œufs 4=Poissons 5=Arachides 6=Soja 7=Lait 8=Fruits à coque 9=Céleri 10=Moutarde 11=Sésame 12=Sulfites 13=Lupin 14=Mollusques -->
+
+          <!-- Marguerite : pâte(gluten), tomate, origan, emmental(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Marguerite</div><div class="pizza-base">Tomate · Origan · Emmental</div></td>
+            <td class="col-price">10,00€</td>
+            <td><span class="dot-yes"></span></td><!-- Gluten -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Lait -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Reine : pâte(gluten), tomate, jambon cuit, champignons, emmental(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Reine</div><div class="pizza-base">Tomate · Jambon cuit · Champignons · Emmental</div></td>
+            <td class="col-price">11,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Espagnole : gluten, chorizo(sulfites), emmental(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Espagnole</div><div class="pizza-base">Tomate · Poivrons · Oignons · Chorizo · Emmental</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Sulfites chorizo -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Italienne : gluten, mozzarella+parmesan(lait), jambon cru(sulfites) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Italienne</div><div class="pizza-base">Tomate · Mozzarella · Jambon cru · Parmesan · Roquette · Crème balsamique</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Sulfites jambon cru -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Quercynoise : gluten, magret séché(sulfites), gésiers, noix(fruits à coque), emmental(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Quercynoise</div><div class="pizza-base">Tomate · Oignons · Magret séché · Gésiers · Noix · Emmental</div></td>
+            <td class="col-price">15,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes"></span></td><!-- Noix -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Sulfites magret -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Calzone : gluten, œuf, fromage(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Calzone</div><div class="pizza-base">Tomate · Champignons · Jambon cuit · Œuf · Fromage</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Œuf -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Orientale : gluten, merguez(sulfites), fromage(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Orientale</div><div class="pizza-base">Tomate · Oignons · Merguez · Raz el hanout · Fromage · Roquette · Crème balsamique</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-maybe"></span></td><!-- Moutarde possible raz el hanout -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Sulfites merguez -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- 4 Saisons : gluten, fromage(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">4 Saisons</div><div class="pizza-base">Tomate · Champignons · Poivrons · Oignons · Courgette · Fromage · Crème balsamique</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Napolitaine : gluten, anchois(poissons), fromage(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Napolitaine</div><div class="pizza-base">Tomate · Oignons · Anchois · Fromage · Olives noires · Câpres · Roquette</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Poissons anchois -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- 4 Fromages : gluten, crème fraîche+fromages(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">4 Fromages</div><div class="pizza-base">Crème fraîche · Chèvre · Reblochon · Bleu des Causses · Roquette · Emmental · Crème balsamique</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Cabécou Miel : gluten, crème fraîche+fromages(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Cabécou Miel</div><div class="pizza-base">Crème fraîche · Chèvre · Cabécou · Miel · Roquette · Crème balsamique</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Tartiflette : gluten, lardons(sulfites), reblochon+crème(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Tartiflette</div><div class="pizza-base">Crème fraîche · Oignons · Lardons · Pommes grenailles · Reblochon · Roquette · Crème balsamique</div></td>
+            <td class="col-price">15,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Sulfites lardons -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+          <!-- Saumon : gluten, saumon fumé(poissons+sulfites), fromage+crème(lait) -->
+          <tr>
+            <td class="col-pizza"><div class="pizza-name">Saumon</div><div class="pizza-base">Crème fraîche · Fromage · Saumon fumé · Aneth · Roquette · Crème balsamique</div></td>
+            <td class="col-price">14,00€</td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Poissons -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-yes"></span></td><!-- Sulfites saumon fumé -->
+            <td><span class="dot-no">–</span></td>
+            <td><span class="dot-no">–</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-legend">
+      <div class="table-legend-item"><span class="dot-yes"></span> Présent</div>
+      <div class="table-legend-item"><span class="dot-maybe"></span> Trace possible</div>
+      <div class="table-legend-item"><span class="dot-no">–</span> Absent</div>
+      <div style="color:var(--text-muted); font-size:12px; margin-left:auto;">Les numéros de colonnes correspondent aux 14 allergènes listés ci-dessus.</div>
+    </div>
+
+    <div class="bottom-note">
+      <strong>⚠️ Information importante :</strong> Ce tableau est fourni à titre indicatif sur la base de nos recettes. Les informations peuvent varier selon les approvisionnements. <strong>En cas d'allergie sévère, contactez-nous directement</strong> avant toute commande au <a href="tel:0565231373" style="color:var(--primary);">05.65.23.13.73</a> ou <a href="tel:0782665014" style="color:var(--primary);">07.82.66.50.14</a>. Notre équipe reste à votre disposition pour tout renseignement complémentaire.
+    </div>
+
+  </div>
+
+  <footer>
+    © 2025 Pizz'aromates – Arcambal (46090) &nbsp;·&nbsp; Tarifs TTC &nbsp;·&nbsp;
+    <a href="mentions-legales.html">Mentions légales</a> &nbsp;·&nbsp;
+    <a href="confidentialite.html">Confidentialité</a> &nbsp;·&nbsp;
+    <a href="allergenes.html">Allergènes</a>
+  </footer>
+
+</body>
+</html>
