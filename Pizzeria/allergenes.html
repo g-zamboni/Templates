@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Allergènes – Pizz'aromates</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>" />
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -242,6 +243,11 @@
     }
 
     /* ── Présence allergène ── */
+    .dot-yes,
+    .dot-maybe {
+      position: relative;
+      cursor: default;
+    }
     .dot-yes {
       display: inline-block;
       width: 18px; height: 18px;
@@ -255,6 +261,51 @@
       border-radius: 4px;
     }
     .dot-no { color: var(--text-muted); font-size: 13px; }
+
+    /* Tooltip */
+    .dot-yes::after,
+    .dot-maybe::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: calc(100% + 7px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.85);
+      background: var(--text);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      padding: 5px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s, transform 0.15s;
+      z-index: 100;
+    }
+    .dot-yes::before,
+    .dot-maybe::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 2px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--text);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 100;
+    }
+    .dot-yes:hover::after,
+    .dot-maybe:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    .dot-yes:hover::before,
+    .dot-maybe:hover::before {
+      opacity: 1;
+    }
 
     /* ── Légende tableau ── */
     .table-legend {
@@ -373,19 +424,17 @@
           </tr>
         </thead>
         <tbody>
-          <!-- 1=Gluten 2=Crustacés 3=Œufs 4=Poissons 5=Arachides 6=Soja 7=Lait 8=Fruits à coque 9=Céleri 10=Moutarde 11=Sésame 12=Sulfites 13=Lupin 14=Mollusques -->
-
-          <!-- Marguerite : pâte(gluten), tomate, origan, emmental(lait) -->
+          <!-- Marguerite -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Marguerite</div><div class="pizza-base">Tomate · Origan · Emmental</div></td>
             <td class="col-price">10,00€</td>
-            <td><span class="dot-yes"></span></td><!-- Gluten -->
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Lait -->
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
@@ -395,17 +444,17 @@
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Reine : pâte(gluten), tomate, jambon cuit, champignons, emmental(lait) -->
+          <!-- Reine -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Reine</div><div class="pizza-base">Tomate · Jambon cuit · Champignons · Emmental</div></td>
             <td class="col-price">11,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
@@ -415,77 +464,77 @@
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Espagnole : gluten, chorizo(sulfites), emmental(lait) -->
+          <!-- Espagnole -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Espagnole</div><div class="pizza-base">Tomate · Poivrons · Oignons · Chorizo · Emmental</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Sulfites chorizo -->
+            <td><span class="dot-yes" data-label="Sulfites"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Italienne : gluten, mozzarella+parmesan(lait), jambon cru(sulfites) -->
+          <!-- Italienne -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Italienne</div><div class="pizza-base">Tomate · Mozzarella · Jambon cru · Parmesan · Roquette · Crème balsamique</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Sulfites jambon cru -->
+            <td><span class="dot-yes" data-label="Sulfites"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Quercynoise : gluten, magret séché(sulfites), gésiers, noix(fruits à coque), emmental(lait) -->
+          <!-- Quercynoise -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Quercynoise</div><div class="pizza-base">Tomate · Oignons · Magret séché · Gésiers · Noix · Emmental</div></td>
             <td class="col-price">15,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
-            <td><span class="dot-yes"></span></td><!-- Noix -->
+            <td><span class="dot-yes" data-label="Lait"></span></td>
+            <td><span class="dot-yes" data-label="Fruits à coque"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Sulfites magret -->
+            <td><span class="dot-yes" data-label="Sulfites"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Calzone : gluten, œuf, fromage(lait) -->
+          <!-- Calzone -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Calzone</div><div class="pizza-base">Tomate · Champignons · Jambon cuit · Œuf · Fromage</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Œuf -->
+            <td><span class="dot-yes" data-label="Œufs"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
@@ -495,37 +544,37 @@
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Orientale : gluten, merguez(sulfites), fromage(lait) -->
+          <!-- Orientale -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Orientale</div><div class="pizza-base">Tomate · Oignons · Merguez · Raz el hanout · Fromage · Roquette · Crème balsamique</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-maybe"></span></td><!-- Moutarde possible raz el hanout -->
+            <td><span class="dot-maybe" data-label="Moutarde (trace possible)"></span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Sulfites merguez -->
+            <td><span class="dot-yes" data-label="Sulfites"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- 4 Saisons : gluten, fromage(lait) -->
+          <!-- 4 Saisons -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">4 Saisons</div><div class="pizza-base">Tomate · Champignons · Poivrons · Oignons · Courgette · Fromage · Crème balsamique</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
@@ -535,17 +584,17 @@
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Napolitaine : gluten, anchois(poissons), fromage(lait) -->
+          <!-- Napolitaine -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Napolitaine</div><div class="pizza-base">Tomate · Oignons · Anchois · Fromage · Olives noires · Câpres · Roquette</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Poissons anchois -->
+            <td><span class="dot-yes" data-label="Poissons"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
@@ -555,17 +604,17 @@
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- 4 Fromages : gluten, crème fraîche+fromages(lait) -->
+          <!-- 4 Fromages -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">4 Fromages</div><div class="pizza-base">Crème fraîche · Chèvre · Reblochon · Bleu des Causses · Roquette · Emmental · Crème balsamique</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
@@ -575,17 +624,17 @@
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Cabécou Miel : gluten, crème fraîche+fromages(lait) -->
+          <!-- Cabécou Miel -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Cabécou Miel</div><div class="pizza-base">Crème fraîche · Chèvre · Cabécou · Miel · Roquette · Crème balsamique</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
@@ -595,42 +644,42 @@
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Tartiflette : gluten, lardons(sulfites), reblochon+crème(lait) -->
+          <!-- Tartiflette -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Tartiflette</div><div class="pizza-base">Crème fraîche · Oignons · Lardons · Pommes grenailles · Reblochon · Roquette · Crème balsamique</div></td>
             <td class="col-price">15,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Sulfites lardons -->
+            <td><span class="dot-yes" data-label="Sulfites"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
           </tr>
 
-          <!-- Saumon : gluten, saumon fumé(poissons+sulfites), fromage+crème(lait) -->
+          <!-- Saumon -->
           <tr>
             <td class="col-pizza"><div class="pizza-name">Saumon</div><div class="pizza-base">Crème fraîche · Fromage · Saumon fumé · Aneth · Roquette · Crème balsamique</div></td>
             <td class="col-price">14,00€</td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Gluten"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Poissons -->
+            <td><span class="dot-yes" data-label="Poissons"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td>
+            <td><span class="dot-yes" data-label="Lait"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
-            <td><span class="dot-yes"></span></td><!-- Sulfites saumon fumé -->
+            <td><span class="dot-yes" data-label="Sulfites"></span></td>
             <td><span class="dot-no">–</span></td>
             <td><span class="dot-no">–</span></td>
           </tr>
