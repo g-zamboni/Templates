@@ -27,33 +27,6 @@
       --font-body:    'Lato', sans-serif;
     }
 
-    /* ─── Thème Fraîcheur ─── */
-    body.theme-fraicheur {
-      --bg:          #f0f7f1;
-      --bg2:         #dff0e3;
-      --surface:     #ffffff;
-      --primary:     #2e7d52;
-      --accent:      #f4a226;
-      --green:       #1a5c38;
-      --text:        #0e2418;
-      --text-muted:  #4e7060;
-      --hero-overlay: rgba(10,40,20,0.52);
-      --hero-img: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1600&q=80');
-    }
-
-    /* ─── Thème Passione ─── */
-    body.theme-passione {
-      --bg:          #1a0a06;
-      --bg2:         #240e08;
-      --surface:     #2b1208;
-      --primary:     #e8401a;
-      --accent:      #d4af37;
-      --green:       #8fbf6e;
-      --text:        #f5e8d8;
-      --text-muted:  #b89070;
-      --hero-overlay: rgba(0,0,0,0.65);
-      --hero-img: url('https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=1600&q=80');
-    }
 
     /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,51 +39,6 @@
       font-family: var(--font-body);
       font-size: 16px;
       line-height: 1.6;
-      transition: background 0.5s, color 0.5s;
-    }
-
-    /* ─── Theme Switcher ─── */
-    .theme-switcher {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: var(--surface);
-      border: 2px solid var(--accent);
-      border-radius: 40px;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      transition: background 0.4s, border-color 0.4s;
-    }
-    .theme-switcher label {
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-    .theme-switcher select {
-      background: transparent;
-      border: none;
-      color: var(--primary);
-      font-family: var(--font-body);
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      outline: none;
-      appearance: none;
-      padding-right: 6px;
-    }
-    .theme-switcher::after {
-      content: '▾';
-      color: var(--accent);
-      font-size: 12px;
-      pointer-events: none;
     }
 
     /* ─── Nav ─── */
@@ -156,14 +84,12 @@
       justify-content: center;
       text-align: center;
       overflow: hidden;
-      transition: background-image 0.6s;
     }
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background: var(--hero-overlay);
-      transition: background 0.5s;
     }
     .hero-content {
       position: relative;
@@ -287,10 +213,7 @@
     }
 
     /* ─── Pizza du mois ─── */
-    .pizza-mois {
-      background: var(--bg2);
-      transition: background 0.5s;
-    }
+    .pizza-mois { background: var(--bg2); }
     .pizza-mois-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -392,7 +315,7 @@
       border-radius: var(--section-radius);
       padding: 22px 24px;
       border: 1px solid rgba(0,0,0,0.06);
-      transition: transform 0.25s, box-shadow 0.25s, background 0.5s;
+      transition: transform 0.25s, box-shadow 0.25s;
       cursor: pointer;
       position: relative;
     }
@@ -444,7 +367,7 @@
     .pizza-card:hover .pizza-card-add { opacity: 1; transform: scale(1.1); }
 
     /* ─── Commander ─── */
-    .order-section { background: var(--bg2); transition: background 0.5s; }
+    .order-section { background: var(--bg2); }
     .order-wrap {
       display: grid;
       grid-template-columns: 1fr 1.2fr;
@@ -539,9 +462,10 @@
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .cart-items { margin-bottom: 20px; }
     .cart-item {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
       align-items: center;
+      gap: 16px;
       padding: 10px 0;
       border-bottom: 1px solid var(--bg2);
       font-size: 14px;
@@ -584,13 +508,8 @@
       display: flex;
       gap: 8px;
     }
-    body.theme-passione .notice-pay {
-      background: rgba(200,146,74,0.1);
-      color: var(--accent);
-    }
-
     /* ─── Horaires ─── */
-    .horaires-section { background: var(--surface); transition: background 0.5s; }
+    .horaires-section { background: var(--surface); }
     .horaires-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -615,7 +534,6 @@
       font-size: 13px;
       color: var(--text-muted);
       border-left: 4px solid var(--accent);
-      transition: background 0.5s;
     }
     .map-placeholder {
       background: var(--bg2);
@@ -623,7 +541,6 @@
       overflow: hidden;
       aspect-ratio: 4/3;
       position: relative;
-      transition: background 0.5s;
     }
     .map-placeholder img {
       width: 100%;
@@ -666,9 +583,7 @@
       background: var(--text);
       color: rgba(255,255,255,0.75);
       padding: 60px 40px 30px;
-      transition: background 0.5s;
     }
-    body.theme-passione footer { background: #0a0402; }
     .footer-inner {
       max-width: 1100px;
       margin: 0 auto;
@@ -758,17 +673,8 @@
   </style>
 </head>
 
-<body class="theme-rustica">
+<body>
 
-  <!-- ─── Theme Switcher ─── -->
-  <div class="theme-switcher">
-    <label>Thème</label>
-    <select id="themeSel" onchange="switchTheme(this.value)">
-      <option value="rustica">🍕 Rustica</option>
-      <option value="fraicheur">🌿 Fraîcheur</option>
-      <option value="passione">🔴 Passione</option>
-    </select>
-  </div>
 
   <!-- ─── Toast ─── -->
   <div class="toast" id="toast"></div>
@@ -1121,11 +1027,6 @@
       t.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-    }
-
-    /* ── Theme ── */
-    function switchTheme(theme) {
-      document.body.className = 'theme-' + theme;
     }
 
     /* ── Init ── */
