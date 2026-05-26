@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pizz'aromates – Arcambal</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Josefin+Sans:wght@300;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── CSS Variables – Thème par défaut : Rustica ─── */
+    :root {
+      --bg:          #f5ede0;
+      --bg2:         #ede0ce;
+      --surface:     #fff9f2;
+      --primary:     #b83b1e;
+      --accent:      #c8924a;
+      --green:       #4a7c59;
+      --text:        #2c1a0e;
+      --text-muted:  #7a5c42;
+      --hero-overlay: rgba(30,15,5,0.55);
+      --hero-img: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=80');
+      --section-radius: 18px;
+      --font-display: 'Satisfy', cursive;
+      --font-head:    'Playfair Display', serif;
+      --font-body:    'Lato', sans-serif;
+    }
+
+    /* ─── Thème Fraîcheur ─── */
+    body.theme-fraicheur {
+      --bg:          #f0f7f1;
+      --bg2:         #dff0e3;
+      --surface:     #ffffff;
+      --primary:     #2e7d52;
+      --accent:      #f4a226;
+      --green:       #1a5c38;
+      --text:        #0e2418;
+      --text-muted:  #4e7060;
+      --hero-overlay: rgba(10,40,20,0.52);
+      --hero-img: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1600&q=80');
+    }
+
+    /* ─── Thème Passione ─── */
+    body.theme-passione {
+      --bg:          #1a0a06;
+      --bg2:         #240e08;
+      --surface:     #2b1208;
+      --primary:     #e8401a;
+      --accent:      #d4af37;
+      --green:       #8fbf6e;
+      --text:        #f5e8d8;
+      --text-muted:  #b89070;
+      --hero-overlay: rgba(0,0,0,0.65);
+      --hero-img: url('https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=1600&q=80');
+    }
+
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    /* ─── Theme Switcher ─── */
+    .theme-switcher {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      border-radius: 40px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .theme-switcher label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .theme-switcher select {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      padding-right: 6px;
+    }
+    .theme-switcher::after {
+      content: '▾';
+      color: var(--accent);
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 60px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.88);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── Hero ─── */
+    .hero {
+      min-height: 100vh;
+      background: var(--hero-img) center/cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      transition: background-image 0.6s;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--hero-overlay);
+      transition: background 0.5s;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 1s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 10vw, 120px);
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-family: var(--font-head);
+      font-style: italic;
+      font-size: 20px;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 40px;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      padding: 7px 18px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .btn {
+      display: inline-block;
+      padding: 16px 40px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.7);
+      color: #fff;
+      margin-left: 12px;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── Sections ─── */
+    section { padding: 90px 40px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(32px, 5vw, 52px);
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--primary);
+    }
+    .divider {
+      width: 50px;
+      height: 3px;
+      background: var(--accent);
+      margin: 18px 0 40px;
+      border-radius: 2px;
+    }
+
+    /* ─── Pizza du mois ─── */
+    .pizza-mois {
+      background: var(--bg2);
+      transition: background 0.5s;
+    }
+    .pizza-mois-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .pizza-mois-img-wrap {
+      position: relative;
+    }
+    .pizza-mois-img {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      display: block;
+    }
+    .pizza-mois-badge {
+      position: absolute;
+      top: -12px; right: -12px;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 18px;
+      padding: 20px;
+      border-radius: 50%;
+      width: 90px; height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.2;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      transform: rotate(12deg);
+    }
+    .pizza-mois-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 30px;
+      margin-bottom: 18px;
+    }
+    .pizza-mois-name {
+      font-family: var(--font-head);
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    .pizza-mois-desc {
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+    .pizza-mois-ingredients {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .ingr-tag {
+      background: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .pizza-mois-price {
+      font-family: var(--font-head);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .pizza-mois-price span {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-weight: 400;
+    }
+
+    /* ─── Menu ─── */
+    .menu-section { background: var(--surface); transition: background 0.5s; }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .pizza-card {
+      background: var(--bg);
+      border-radius: var(--section-radius);
+      padding: 22px 24px;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s, background 0.5s;
+      cursor: pointer;
+      position: relative;
+    }
+    .pizza-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    .pizza-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .pizza-card-name {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .pizza-card-price {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 17px;
+      white-space: nowrap;
+    }
+    .pizza-card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .pizza-card-add {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.2s, transform 0.15s;
+      opacity: 0;
+    }
+    .pizza-card:hover .pizza-card-add { opacity: 1; transform: scale(1.1); }
+
+    /* ─── Commander ─── */
+    .order-section { background: var(--bg2); transition: background 0.5s; }
+    .order-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .order-info h3 {
+      font-family: var(--font-head);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .order-info p {
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+    .info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: background 0.5s;
+    }
+    .info-icon { font-size: 22px; }
+    .info-text-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .info-text-val {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    /* ─── Order Form ─── */
+    .order-form-card {
+      background: var(--surface);
+      border-radius: var(--section-radius);
+      padding: 36px 32px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+      transition: background 0.5s;
+    }
+    .order-form-title {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid transparent;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, background 0.5s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .cart-items { margin-bottom: 20px; }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--bg2);
+      font-size: 14px;
+    }
+    .cart-item-name { font-weight: 700; color: var(--text); }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg2);
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+    .cart-item-qty button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--primary);
+      font-weight: 700;
+      line-height: 1;
+    }
+    .cart-item-price { color: var(--primary); font-weight: 700; }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0 20px;
+      font-family: var(--font-head);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .notice-pay {
+      background: #fffbeb;
+      border: 1.5px solid var(--accent);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #8a6200;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 8px;
+    }
+    body.theme-passione .notice-pay {
+      background: rgba(200,146,74,0.1);
+      color: var(--accent);
+    }
+
+    /* ─── Horaires ─── */
+    .horaires-section { background: var(--surface); transition: background 0.5s; }
+    .horaires-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .hours-table { width: 100%; border-collapse: collapse; }
+    .hours-table tr td {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--bg2);
+      font-size: 15px;
+    }
+    .hours-table tr:last-child td { border-bottom: none; }
+    .day { font-weight: 700; color: var(--text); }
+    .hours { color: var(--text-muted); text-align: right; }
+    .closed { color: var(--primary); font-weight: 600; }
+    .horaires-note {
+      margin-top: 20px;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-left: 4px solid var(--accent);
+      transition: background 0.5s;
+    }
+    .map-placeholder {
+      background: var(--bg2);
+      border-radius: var(--section-radius);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      position: relative;
+      transition: background 0.5s;
+    }
+    .map-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+    .map-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--hero-overlay);
+      color: #fff;
+      text-align: center;
+      gap: 8px;
+    }
+    .map-overlay .icon { font-size: 36px; }
+    .map-overlay strong { font-family: var(--font-head); font-size: 20px; }
+    .map-overlay span { font-size: 14px; opacity: 0.8; }
+    .map-overlay a {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-top: 8px;
+      border: 1px solid var(--accent);
+      padding: 8px 20px;
+      border-radius: 30px;
+      transition: background 0.2s;
+    }
+    .map-overlay a:hover { background: var(--accent); color: #fff; }
+
+    /* ─── Footer ─── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.75);
+      padding: 60px 40px 30px;
+      transition: background 0.5s;
+    }
+    body.theme-passione footer { background: #0a0402; }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 40px;
+    }
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .footer-brand-sub { font-size: 13px; opacity: 0.6; margin-bottom: 20px; }
+    .footer-social { display: flex; gap: 12px; }
+    .social-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 18px;
+      transition: background 0.2s;
+    }
+    .social-btn:hover { background: var(--primary); }
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      opacity: 0.4;
+    }
+
+    /* ─── Toast notification ─── */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      z-index: 9999;
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      section { padding: 60px 20px; }
+      .pizza-mois-inner,
+      .order-wrap,
+      .horaires-grid,
+      .footer-inner { grid-template-columns: 1fr; gap: 30px; }
+      .form-row { grid-template-columns: 1fr; }
+      .theme-switcher { top: auto; bottom: 20px; right: 20px; }
+    }
+  </style>
+</head>
+
+<body class="theme-rustica">
+
+  <!-- ─── Theme Switcher ─── -->
+  <div class="theme-switcher">
+    <label>Thème</label>
+    <select id="themeSel" onchange="switchTheme(this.value)">
+      <option value="rustica">🍕 Rustica</option>
+      <option value="fraicheur">🌿 Fraîcheur</option>
+      <option value="passione">🔴 Passione</option>
+    </select>
+  </div>
+
+  <!-- ─── Toast ─── -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ─── Nav ─── -->
+  <nav>
+    <a href="#" class="nav-logo">Pizz'aromates</a>
+    <ul class="nav-links">
+      <li><a href="#menu">Carte</a></li>
+      <li><a href="#commander">Commander</a></li>
+      <li><a href="#horaires">Horaires</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── Hero ─── -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Artisanal · Arcambal · Lot</p>
+      <h1>Pizz'aromates</h1>
+      <p class="hero-sub">Pâte maison, sauce tomate fraîche & magret séché du terroir</p>
+      <div class="hero-badges">
+        <span class="badge">🍕 32 cm</span>
+        <span class="badge">🌿 Fait maison</span>
+        <span class="badge">🏡 À emporter</span>
+        <span class="badge">📞 Réservation</span>
+      </div>
+      <a href="#commander" class="btn btn-primary">Commander en ligne</a>
+      <a href="#menu" class="btn btn-outline">Voir la carte</a>
+    </div>
+    <div class="hero-scroll">↓ &nbsp; Découvrir</div>
+  </section>
+
+  <!-- ─── Pizza du Mois ─── -->
+  <section class="pizza-mois">
+    <div class="container">
+      <p class="section-label">✦ Spéciale du moment</p>
+      <h2 class="section-title">La pizza <em>du mois</em></h2>
+      <div class="divider"></div>
+      <div class="pizza-mois-inner">
+        <div class="pizza-mois-img-wrap">
+          <img
+            class="pizza-mois-img"
+            src="https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=800&q=80"
+            alt="Pizza Quercynoise du mois"
+          />
+          <div class="pizza-mois-badge">Pizza du mois</div>
+        </div>
+        <div>
+          <span class="pizza-mois-tag">Mai 2025</span>
+          <h3 class="pizza-mois-name">La Quercynoise</h3>
+          <p class="pizza-mois-desc">
+            L'emblème du Quercy dans votre assiette — magret séché fait maison,
+            gésiers fondants, noix croquantes sur une base tomate généreuse.
+            Un hommage au terroir lotois à chaque bouchée.
+          </p>
+          <div class="pizza-mois-ingredients">
+            <span class="ingr-tag">🍅 Tomate</span>
+            <span class="ingr-tag">🧅 Oignons</span>
+            <span class="ingr-tag">🦆 Magret séché</span>
+            <span class="ingr-tag">🫀 Gésiers</span>
+            <span class="ingr-tag">🌰 Noix</span>
+            <span class="ingr-tag">🧀 Emmental</span>
+          </div>
+          <div class="pizza-mois-price">15,00€ <span>· taille 32 cm · TTC</span></div>
+          <br /><br />
+          <a href="#commander" class="btn btn-primary" onclick="addToCart('La Quercynoise', 15)">Ajouter au panier</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Menu ─── -->
+  <section class="menu-section" id="menu">
+    <div class="container">
+      <p class="section-label">✦ Notre carte</p>
+      <h2 class="section-title">Toutes <em>nos pizzas</em></h2>
+      <div class="divider"></div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <!-- ─── Commander ─── -->
+  <section class="order-section" id="commander">
+    <div class="container">
+      <p class="section-label">✦ Click & Collect</p>
+      <h2 class="section-title">Commander <em>en ligne</em></h2>
+      <div class="divider"></div>
+      <div class="order-wrap">
+        <div class="order-info">
+          <h3>Commandez, on prépare,<br />vous réglez sur place.</h3>
+          <p>Choisissez vos pizzas, indiquez votre heure de retrait, et venez régler directement à la pizzeria. Simple, rapide, sans frais cachés.</p>
+          <div class="info-block">
+            <div class="info-row">
+              <span class="info-icon">📍</span>
+              <div>
+                <div class="info-text-label">Adresse</div>
+                <div class="info-text-val">33, route de Saint-Cirq Lapopie · 46090 Arcambal</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">📞</span>
+              <div>
+                <div class="info-text-label">Téléphone</div>
+                <div class="info-text-val">05.65.23.13.73 · 07.82.66.50.14</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">💳</span>
+              <div>
+                <div class="info-text-label">Moyens de paiement</div>
+                <div class="info-text-val">CB · Chèque · Espèces · Tickets restaurant</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">📧</span>
+              <div>
+                <div class="info-text-label">Email</div>
+                <div class="info-text-val">pizzaromates@gmail.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-form-card">
+          <div class="order-form-title">🛒 Votre panier</div>
+          <div class="cart-items" id="cartItems">
+            <p style="color:var(--text-muted); font-size:14px; text-align:center; padding:20px 0;">
+              Votre panier est vide — ajoutez des pizzas depuis la carte ci-dessus !
+            </p>
+          </div>
+          <div class="cart-total" id="cartTotal" style="display:none">
+            <span>Total</span>
+            <span id="cartTotalAmount" style="color:var(--primary)">0,00€</span>
+          </div>
+
+          <div class="notice-pay">
+            <span>ℹ️</span>
+            <span>Le règlement s'effectue <strong>uniquement en magasin</strong> lors du retrait de votre commande.</span>
+          </div>
+
+          <div class="form-group">
+            <label>Votre prénom</label>
+            <input type="text" placeholder="Ex : Marie" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Téléphone</label>
+              <input type="tel" placeholder="06 xx xx xx xx" />
+            </div>
+            <div class="form-group">
+              <label>Heure de retrait</label>
+              <input type="time" min="11:30" max="21:00" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Remarques / allergies</label>
+            <textarea placeholder="Ex : sans oignons, allergie cacahuètes…"></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="submitOrder()">
+            Valider ma commande →
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Horaires ─── -->
+  <section class="horaires-section" id="horaires">
+    <div class="container">
+      <p class="section-label">✦ Quand nous trouver</p>
+      <h2 class="section-title">Horaires <em>d'ouverture</em></h2>
+      <div class="divider"></div>
+      <div class="horaires-grid">
+        <div>
+          <table class="hours-table">
+            <tr>
+              <td class="day">Lundi</td>
+              <td class="hours closed">Fermé</td>
+            </tr>
+            <tr>
+              <td class="day">Mardi</td>
+              <td class="hours closed">Fermé</td>
+            </tr>
+            <tr>
+              <td class="day">Mercredi</td>
+              <td class="hours">11h30 – 13h30 · 18h30 – 21h00</td>
+            </tr>
+            <tr>
+              <td class="day">Jeudi</td>
+              <td class="hours closed">Fermé</td>
+            </tr>
+            <tr>
+              <td class="day">Vendredi</td>
+              <td class="hours">18h30 – 21h00</td>
+            </tr>
+            <tr>
+              <td class="day">Samedi</td>
+              <td class="hours">11h30 – 13h30 · 18h30 – 21h00</td>
+            </tr>
+            <tr>
+              <td class="day">Dimanche</td>
+              <td class="hours">18h30 – 21h00</td>
+            </tr>
+          </table>
+          <div class="horaires-note">
+            🗓️ <strong>Fermeture annuelle :</strong> mois de janvier.<br />
+            Pour toute commande de plateau (37/53 cm à partir de 32€ · 40/60 cm à 40€), merci de commander <strong>24h à l'avance</strong>.
+          </div>
+        </div>
+        <div class="map-placeholder">
+          <img
+            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80"
+            alt="Arcambal, Lot"
+          />
+          <div class="map-overlay">
+            <span class="icon">📍</span>
+            <strong>33, route de Saint-Cirq Lapopie</strong>
+            <span>46090 Arcambal · Lot</span>
+            <a href="https://maps.google.com/?q=Pizz+aromates+Arcambal" target="_blank" rel="noopener">Ouvrir dans Maps →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─── -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Pizz'aromates</div>
+        <div class="footer-brand-sub">La pizzeria artisanale d'Arcambal · Restaurant Les Aromates</div>
+        <div class="footer-social">
+          <a href="#" class="social-btn" title="Facebook">f</a>
+          <a href="#" class="social-btn" title="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#menu">Carte des pizzas</a></li>
+          <li><a href="#commander">Commander en ligne</a></li>
+          <li><a href="#horaires">Horaires</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:0565231373">05.65.23.13.73</a></li>
+          <li><a href="tel:0782665014">07.82.66.50.14</a></li>
+          <li><a href="mailto:pizzaromates@gmail.com">pizzaromates@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Pizz'aromates – Arcambal, Lot (46090)</span>
+      <span>Liste des allergènes disponible sur demande · Tarifs TTC</span>
+    </div>
+  </footer>
+
+  <!-- ─── JS ─── -->
+  <script>
+    /* ── Menu data ── */
+    const pizzas = [
+      { name: "Marguerite",    price: 10, desc: "Tomate, origan, emmental" },
+      { name: "Reine",         price: 11, desc: "Tomate, jambon cuit, champignons, emmental" },
+      { name: "Espagnole",     price: 14, desc: "Tomate, poivrons, oignons, chorizo, emmental" },
+      { name: "Italienne",     price: 14, desc: "Tomate, mozzarella, jambon cru, parmesan, roquette, crème balsamique" },
+      { name: "Quercynoise",   price: 15, desc: "Tomate, oignons, magret séché, gésiers, noix, emmental" },
+      { name: "Calzone",       price: 14, desc: "Tomate, champignon, jambon cuit, œuf, fromage" },
+      { name: "Orientale",     price: 14, desc: "Tomate, oignons, merguez, raz el hanout, fromage, roquette, crème balsamique" },
+      { name: "4 Saisons",     price: 14, desc: "Tomate, champignons, poivrons, oignons, courgette, fromage, crème balsamique" },
+      { name: "Napolitaine",   price: 14, desc: "Tomate, oignons, anchois, fromage, olives noires, câpres, roquette" },
+      { name: "4 Fromages",    price: 14, desc: "Crème fraîche, chèvre, reblochon, bleu des causses, roquette, emmental, crème balsamique" },
+      { name: "Cabécou Miel",  price: 14, desc: "Crème fraîche, chèvre, cabécou, miel, roquette, crème balsamique" },
+      { name: "Tartiflette",   price: 15, desc: "Crème fraîche, oignons, lardons, pommes grenailles, reblochon, roquette, crème balsamique" },
+      { name: "Saumon",        price: 14, desc: "Crème fraîche, fromage, saumon fumé, aneth, roquette, crème balsamique" },
+    ];
+
+    /* ── Cart ── */
+    let cart = [];
+
+    function buildMenu() {
+      const grid = document.getElementById('menuGrid');
+      grid.innerHTML = pizzas.map(p => `
+        <div class="pizza-card" onclick="addToCart('${p.name}', ${p.price})">
+          <div class="pizza-card-header">
+            <span class="pizza-card-name">${p.name}</span>
+            <span class="pizza-card-price">${p.price.toFixed(2).replace('.', ',')}€</span>
+          </div>
+          <div class="pizza-card-desc">${p.desc}</div>
+          <button class="pizza-card-add" title="Ajouter">+</button>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(name, price) {
+      const ex = cart.find(i => i.name === name);
+      if (ex) ex.qty++;
+      else cart.push({ name, price, qty: 1 });
+      renderCart();
+      showToast(`🍕 ${name} ajouté au panier !`);
+    }
+
+    function changeQty(name, delta) {
+      const idx = cart.findIndex(i => i.name === name);
+      if (idx === -1) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      const el = document.getElementById('cartItems');
+      const totEl = document.getElementById('cartTotal');
+      const totAmtEl = document.getElementById('cartTotalAmount');
+      if (!cart.length) {
+        el.innerHTML = '<p style="color:var(--text-muted); font-size:14px; text-align:center; padding:20px 0;">Votre panier est vide — ajoutez des pizzas depuis la carte ci-dessus !</p>';
+        totEl.style.display = 'none';
+        return;
+      }
+      totEl.style.display = 'flex';
+      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      totAmtEl.textContent = total.toFixed(2).replace('.', ',') + '€';
+      el.innerHTML = cart.map(i => `
+        <div class="cart-item">
+          <span class="cart-item-name">${i.name}</span>
+          <div class="cart-item-qty">
+            <button onclick="changeQty('${i.name}', -1)">−</button>
+            <span>${i.qty}</span>
+            <button onclick="changeQty('${i.name}', 1)">+</button>
+          </div>
+          <span class="cart-item-price">${(i.price * i.qty).toFixed(2).replace('.', ',')}€</span>
+        </div>
+      `).join('');
+    }
+
+    function submitOrder() {
+      if (!cart.length) { showToast('⚠️ Votre panier est vide !'); return; }
+      showToast('✅ Commande envoyée ! On vous prépare ça 🍕');
+      cart = [];
+      renderCart();
+    }
+
+    /* ── Toast ── */
+    let toastTimer;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    /* ── Theme ── */
+    function switchTheme(theme) {
+      document.body.className = 'theme-' + theme;
+    }
+
+    /* ── Init ── */
+    buildMenu();
+  </script>
+</body>
+</html>
