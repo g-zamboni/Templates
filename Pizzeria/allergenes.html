@@ -346,6 +346,21 @@
       nav { padding: 16px 20px; }
       .page-hero { padding: 40px 20px 32px; }
       .alert, .content { padding-left: 20px; padding-right: 20px; }
+      /* 2 colonnes fixes sur mobile portrait */
+      .allergens-legend {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ── Tooltip actif au toucher (mobile) ── */
+    .dot-yes.touch-active::after,
+    .dot-maybe.touch-active::after {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    .dot-yes.touch-active::before,
+    .dot-maybe.touch-active::before {
+      opacity: 1;
     }
   </style>
 </head>
@@ -707,6 +722,28 @@
     <a href="confidentialite.html">Confidentialité</a> &nbsp;·&nbsp;
     <a href="allergenes.html">Allergènes</a>
   </footer>
+
+  <script>
+    // Tooltip au toucher sur mobile
+    let activeTooltip = null;
+    document.querySelectorAll('.dot-yes[data-label], .dot-maybe[data-label]').forEach(dot => {
+      dot.addEventListener('touchstart', e => {
+        e.preventDefault();
+        if (activeTooltip && activeTooltip !== dot) {
+          activeTooltip.classList.remove('touch-active');
+        }
+        dot.classList.toggle('touch-active');
+        activeTooltip = dot.classList.contains('touch-active') ? dot : null;
+      }, { passive: false });
+    });
+    // Fermer en touchant ailleurs
+    document.addEventListener('touchstart', e => {
+      if (activeTooltip && !activeTooltip.contains(e.target)) {
+        activeTooltip.classList.remove('touch-active');
+        activeTooltip = null;
+      }
+    });
+  </script>
 
 </body>
 </html>
