@@ -638,7 +638,7 @@
       display: flex;
       justify-content: space-between;
       font-size: 12px;
-      opacity: 0.4;
+      opacity: 0.7;
     }
 
     /* ─── Toast notification ─── */
@@ -670,7 +670,130 @@
       .horaires-grid,
       .footer-inner { grid-template-columns: 1fr; gap: 30px; }
       .form-row { grid-template-columns: 1fr; }
-      .theme-switcher { top: auto; bottom: 20px; right: 20px; }
+    }
+
+    /* ─── Hamburger ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 8px;
+      z-index: 200;
+    }
+    /* ─── Hamburger 100% CSS ─── */
+    #nav-toggle { display: none; }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 10px;
+      z-index: 300;
+      position: relative;
+    }
+    .nav-burger span {
+      display: block;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+      transform-origin: center;
+    }
+
+    /* Overlay */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 149;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    /* Drawer */
+    .nav-drawer {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 80%;
+      max-width: 320px;
+      background: rgba(30,15,5,0.98);
+      backdrop-filter: blur(12px);
+      z-index: 150;
+      padding: 30px 40px 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-drawer-close {
+      align-self: flex-end;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      line-height: 1;
+      margin-bottom: 30px;
+      flex-shrink: 0;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-drawer a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: color 0.2s;
+    }
+    .nav-drawer a:last-child { border-bottom: none; }
+    .nav-drawer a:hover,
+    .nav-drawer a:active { color: var(--accent); }
+
+    /* ── États actifs via checkbox ── */
+    #nav-toggle:checked ~ .nav-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #nav-toggle:checked ~ .nav-drawer {
+      transform: translateX(0);
+    }
+    /* Hamburger → croix */
+    #nav-toggle:checked ~ nav .nav-burger span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    #nav-toggle:checked ~ nav .nav-burger span:nth-child(2) {
+      opacity: 0;
+    }
+    #nav-toggle:checked ~ nav .nav-burger span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    @media (max-width: 768px) {
+      .nav-burger { display: flex; }
     }
   </style>
 </head>
@@ -681,6 +804,21 @@
   <!-- ─── Toast ─── -->
   <div class="toast" id="toast"></div>
 
+  <!-- Checkbox cachée – moteur du menu mobile -->
+  <input type="checkbox" id="nav-toggle" />
+
+  <!-- Overlay cliquable pour fermer -->
+  <label class="nav-overlay" for="nav-toggle" aria-hidden="true"></label>
+
+  <!-- Drawer mobile -->
+  <div class="nav-drawer">
+    <label class="nav-drawer-close" for="nav-toggle" aria-label="Fermer">✕</label>
+    <a href="#menu"      onclick="document.getElementById('nav-toggle').checked=false">Carte</a>
+    <a href="#commander" onclick="document.getElementById('nav-toggle').checked=false">Commander</a>
+    <a href="#horaires"  onclick="document.getElementById('nav-toggle').checked=false">Horaires</a>
+    <a href="#contact"   onclick="document.getElementById('nav-toggle').checked=false">Contact</a>
+  </div>
+
   <!-- ─── Nav ─── -->
   <nav>
     <a href="#" class="nav-logo">Pizz'aromates</a>
@@ -690,6 +828,9 @@
       <li><a href="#horaires">Horaires</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <label class="nav-burger" for="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </label>
   </nav>
 
   <!-- ─── Hero ─── -->
