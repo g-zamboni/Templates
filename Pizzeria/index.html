@@ -168,6 +168,17 @@
       color: #fff;
       margin-left: 12px;
     }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      .btn-outline { margin-left: 0; }
+      .hero-btns { flex-direction: column; align-items: center; gap: 14px; }
+      .hero-btns .btn { width: 80%; text-align: center; }
+    }
     .hero-scroll {
       position: absolute;
       bottom: 30px;
@@ -644,9 +655,10 @@
     /* ─── Toast notification ─── */
     .toast {
       position: fixed;
-      bottom: 30px;
+      bottom: 100px;
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
+      transform: translateX(-50%) translateY(160px);
+      opacity: 0;
       background: var(--text);
       color: #fff;
       padding: 14px 28px;
@@ -655,10 +667,13 @@
       font-weight: 700;
       box-shadow: 0 8px 30px rgba(0,0,0,0.25);
       z-index: 9999;
-      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), opacity 0.4s;
       pointer-events: none;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
 
     /* ─── Bloc fidélité ─── */
     .fidelity-block {
@@ -1072,6 +1087,69 @@
       margin: 4px 0 2px;
     }
 
+    /* ─── Mini-panier flottant ─── */
+    .floating-cart {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      z-index: 500;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50px;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(184,59,30,0.45);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+      white-space: nowrap;
+      min-width: 220px;
+      justify-content: center;
+    }
+    .floating-cart.visible {
+      transform: translateX(-50%) translateY(0);
+    }
+    .floating-cart:hover {
+      box-shadow: 0 12px 40px rgba(184,59,30,0.55);
+      transform: translateX(-50%) translateY(-3px);
+    }
+    .floating-cart-icon {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .floating-cart-icon svg {
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+    }
+    .floating-cart-label {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+    .floating-cart-badge {
+      background: #fff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .floating-cart-total {
+      font-weight: 700;
+      font-size: 15px;
+      opacity: 0.9;
+    }
+    .floating-cart-arrow {
+      font-size: 16px;
+      opacity: 0.7;
+    }
+
     /* ─── Responsive ─── */
     @media (max-width: 768px) {
       nav { padding: 18px 24px; }
@@ -1201,6 +1279,19 @@
   <!-- ─── Toast ─── -->
   <div class="toast" id="toast"></div>
 
+  <!-- ─── Mini-panier flottant ─── -->
+  <div class="floating-cart" id="floatingCart" onclick="openFloatingCart()">
+    <span class="floating-cart-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 3M7 13l-2 5h12M9 21a1 1 0 100-2 1 1 0 000 2zm10 0a1 1 0 100-2 1 1 0 000 2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </span>
+    <span class="floating-cart-label" id="floatingCartLabel">Mon panier</span>
+    <span class="floating-cart-badge" id="floatingCartBadge">0</span>
+    <span class="floating-cart-total" id="floatingCartTotal"></span>
+    <span class="floating-cart-arrow">→</span>
+  </div>
+
   <!-- Checkbox cachée – moteur du menu mobile -->
   <input type="checkbox" id="nav-toggle" />
 
@@ -1242,8 +1333,10 @@
         <span class="badge">🌞 Terrasse</span>
         <span class="badge">📞 Réservation</span>
       </div>
-      <a href="#commander" class="btn btn-primary">Commander en ligne</a>
-      <a href="#menu" class="btn btn-outline">Voir la carte</a>
+      <div class="hero-btns">
+        <a href="#menu" class="btn btn-primary">Commander en ligne</a>
+        <a href="#menu" class="btn btn-outline">Voir la carte</a>
+      </div>
     </div>
     <div class="hero-scroll">↓ &nbsp; Découvrir</div>
   </section>
@@ -1564,7 +1657,34 @@
 
   <!-- ─── JS ─── -->
   <script>
-    /* ── Login inline ── */
+    /* ── Mini-panier flottant ── */
+    function updateFloatingCart() {
+      const fc      = document.getElementById('floatingCart');
+      const badge   = document.getElementById('floatingCartBadge');
+      const total   = document.getElementById('floatingCartTotal');
+      const label   = document.getElementById('floatingCartLabel');
+      const count   = cart.reduce((s, i) => s + i.qty, 0);
+      const amount  = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+      if (count === 0) {
+        fc.classList.remove('visible');
+        return;
+      }
+      badge.textContent = count;
+      total.textContent = amount.toFixed(2).replace('.', ',') + '€';
+      label.textContent = count === 1 ? '1 pizza' : `${count} pizzas`;
+      fc.classList.add('visible');
+    }
+
+    function openFloatingCart() {
+      const target = document.getElementById('commander');
+      target.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        document.getElementById('fieldPrenom').focus();
+      }, 700);
+    }
+
+    /* ── Menu data ── */
     function showLoginForm(e) {
       e.preventDefault();
       document.getElementById('loginFidelityBtns').style.display = 'none';
@@ -1736,7 +1856,7 @@
       if (ex) ex.qty++;
       else cart.push({ name, price, qty: 1 });
       renderCart();
-      showToast(`🍕 ${name} ajouté au panier !`);
+      showToast(`🍕 ${name} ajoutée au panier !`);
     }
 
     function changeQty(name, delta) {
@@ -1772,6 +1892,8 @@
       }
       // Recalcule les créneaux selon le nombre de pizzas dans le panier
       buildSlots();
+      // Met à jour le mini-panier flottant
+      updateFloatingCart();
     }
 
     function submitOrder() {
@@ -1794,6 +1916,20 @@
     /* ── Init ── */
     buildMenu();
     buildSlots();
+
+    // Masque le panier flottant quand la section commander est visible
+    const commanderSection = document.getElementById('commander');
+    if (commanderSection && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        const fc = document.getElementById('floatingCart');
+        if (entries[0].isIntersecting) {
+          fc.classList.remove('visible');
+        } else if (cart.reduce((s,i) => s + i.qty, 0) > 0) {
+          fc.classList.add('visible');
+        }
+      }, { threshold: 0.2 });
+      observer.observe(commanderSection);
+    }
   </script>
 </body>
 </html>
