@@ -1732,7 +1732,12 @@
 
     function openFloatingCart() {
       const fc = document.getElementById('floatingCart');
+      // Masquage immédiat au clic
       fc.classList.remove('visible');
+      // Sécurité : forcer le masquage après le scroll
+      setTimeout(() => fc.classList.remove('visible'), 100);
+      setTimeout(() => fc.classList.remove('visible'), 500);
+      setTimeout(() => fc.classList.remove('visible'), 1000);
       const target = document.getElementById('commander');
       target.scrollIntoView({ behavior: 'smooth' });
       setTimeout(() => {
@@ -1977,9 +1982,12 @@
     window.addEventListener('scroll', function() {
       const fc = document.getElementById('floatingCart');
       const section = document.getElementById('commander');
-      if (!section || cart.reduce((s,i) => s + i.qty, 0) === 0) return;
+      if (!section) return;
+      const count = cart.reduce((s,i) => s + i.qty, 0);
+      if (count === 0) { fc.classList.remove('visible'); return; }
       const rect = section.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (inView) {
         fc.classList.remove('visible');
       } else {
         fc.classList.add('visible');
