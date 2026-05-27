@@ -660,6 +660,144 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* ─── Sélecteur de créneaux ─── */
+    .slot-picker {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1.5px solid transparent;
+    }
+    .slot-picker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .slot-session {
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .slot-legend {
+      display: flex;
+      gap: 12px;
+    }
+    .slot-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .slot-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .slot-dot.available { background: #4a7c59; }
+    .slot-dot.full      { background: #ccc; }
+
+    .slot-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .slot-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .slot-btn.available {
+      background: var(--surface);
+      border-color: rgba(74,124,89,0.3);
+      color: var(--text);
+    }
+    .slot-btn.available:hover {
+      background: #4a7c59;
+      border-color: #4a7c59;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .slot-btn.active {
+      background: #4a7c59;
+      border-color: #4a7c59;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(74,124,89,0.35);
+    }
+    .slot-btn.full {
+      background: var(--bg2);
+      border-color: transparent;
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+    .slot-btn.past {
+      display: none;
+    }
+    /* Tooltip "Complet" au survol */
+    .slot-btn.full::after {
+      content: 'Complet';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+    }
+    .slot-btn.full:hover::after { opacity: 1; }
+
+    .slot-selected {
+      margin-top: 12px;
+      background: rgba(74,124,89,0.1);
+      border: 1.5px solid #4a7c59;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #4a7c59;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .slot-clear {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: underline;
+      opacity: 0.7;
+    }
+    .slot-clear:hover { opacity: 1; }
+
+    .slot-separator {
+      width: 100%;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 4px 0 2px;
+    }
+
     /* ─── Responsive ─── */
     @media (max-width: 768px) {
       nav { padding: 18px 24px; }
@@ -672,21 +810,6 @@
       .form-row { grid-template-columns: 1fr; }
     }
 
-    /* ─── Hamburger ─── */
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 40px;
-      height: 40px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 10px;
-      cursor: pointer;
-      padding: 8px;
-      z-index: 200;
-    }
     /* ─── Hamburger 100% CSS ─── */
     #nav-toggle { display: none; }
 
@@ -961,18 +1084,31 @@
 
           <div class="form-group">
             <label>Votre prénom</label>
-            <input type="text" placeholder="Ex : Marie" />
+            <input type="text" id="fieldPrenom" placeholder="Ex : Marie" />
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Téléphone</label>
-              <input type="tel" placeholder="06 xx xx xx xx" />
-            </div>
-            <div class="form-group">
-              <label>Heure de retrait</label>
-              <input type="time" min="11:30" max="21:00" />
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" id="fieldTel" placeholder="06 xx xx xx xx" />
+          </div>
+
+          <div class="form-group">
+            <label>Heure de retrait</label>
+            <div class="slot-picker" id="slotPicker">
+              <div class="slot-picker-header">
+                <span class="slot-session" id="slotSession">Choisissez une heure</span>
+                <span class="slot-legend">
+                  <span class="slot-legend-item"><span class="slot-dot available"></span>Disponible</span>
+                  <span class="slot-legend-item"><span class="slot-dot full"></span>Complet</span>
+                </span>
+              </div>
+              <div class="slot-grid" id="slotGrid"></div>
+              <div class="slot-selected" id="slotSelected" style="display:none">
+                ✓ Retrait à <strong id="slotSelectedTime"></strong>
+                <span onclick="clearSlot()" class="slot-clear">Modifier</span>
+              </div>
             </div>
           </div>
+
           <div class="form-group">
             <label>Remarques / allergies</label>
             <textarea placeholder="Ex : sans oignons, allergie cacahuètes…"></textarea>
@@ -1089,6 +1225,114 @@
 
   <!-- ─── JS ─── -->
   <script>
+    /* ── Sélecteur de créneaux ── */
+
+    // Simulation des données (en WordPress ce sera chargé dynamiquement)
+    // Horaires : mercredi midi, vendredi soir, samedi midi+soir, dimanche soir
+    // On simule un mercredi soir avec quelques créneaux complets
+    const SLOT_DURATION   = 15;  // minutes
+    const SLOT_MIN_DELAY  = 20;  // délai minimum de préparation en minutes
+    const SLOT_CAPACITY   = 8;   // pizzas max par créneau
+
+    // Créneaux simulés pour la démo (heure en minutes depuis minuit)
+    const simulatedSlots = [
+      // Mercredi midi
+      { time: '11:30', session: 'Midi',  load: 0 },
+      { time: '11:45', session: 'Midi',  load: 2 },
+      { time: '12:00', session: 'Midi',  load: 5 },
+      { time: '12:15', session: 'Midi',  load: 8 },  // complet
+      { time: '12:30', session: 'Midi',  load: 7 },
+      { time: '12:45', session: 'Midi',  load: 3 },
+      { time: '13:00', session: 'Midi',  load: 1 },
+      { time: '13:15', session: 'Midi',  load: 0 },
+      // Mercredi soir
+      { time: '18:30', session: 'Soir',  load: 0 },
+      { time: '18:45', session: 'Soir',  load: 4 },
+      { time: '19:00', session: 'Soir',  load: 8 },  // complet
+      { time: '19:15', session: 'Soir',  load: 8 },  // complet
+      { time: '19:30', session: 'Soir',  load: 6 },
+      { time: '19:45', session: 'Soir',  load: 2 },
+      { time: '20:00', session: 'Soir',  load: 0 },
+      { time: '20:15', session: 'Soir',  load: 0 },
+      { time: '20:30', session: 'Soir',  load: 1 },
+      { time: '20:45', session: 'Soir',  load: 0 },
+    ];
+
+    let selectedSlot = null;
+
+    function timeToMinutes(t) {
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function buildSlots() {
+      const grid     = document.getElementById('slotGrid');
+      const header   = document.getElementById('slotSession');
+      const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+
+      // Heure actuelle simulée pour la démo : 18h50
+      // En WordPress ce sera : new Date()
+      const nowMinutes = 18 * 60 + 50;
+      const minRetrait = nowMinutes + SLOT_MIN_DELAY;
+
+      grid.innerHTML = '';
+      let lastSession = null;
+
+      simulatedSlots.forEach(slot => {
+        const slotMin  = timeToMinutes(slot.time);
+        const isPast   = slotMin < minRetrait;
+        const isFull   = (slot.load + cartCount) > SLOT_CAPACITY;
+
+        // Séparateur de session
+        if (slot.session !== lastSession) {
+          const sep = document.createElement('div');
+          sep.className = 'slot-separator';
+          sep.textContent = slot.session;
+          grid.appendChild(sep);
+          lastSession = slot.session;
+        }
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = slot.time;
+        btn.dataset.time = slot.time;
+
+        if (isPast) {
+          btn.className = 'slot-btn past';
+        } else if (isFull) {
+          btn.className = 'slot-btn full';
+          btn.disabled = true;
+        } else {
+          btn.className = 'slot-btn available' + (selectedSlot === slot.time ? ' active' : '');
+          btn.onclick = () => selectSlot(slot.time);
+        }
+
+        grid.appendChild(btn);
+      });
+
+      // Mise à jour du libellé header
+      const available = simulatedSlots.filter(s => {
+        const m = timeToMinutes(s.time);
+        return m >= minRetrait && (s.load + cartCount) < SLOT_CAPACITY;
+      }).length;
+      header.textContent = available > 0
+        ? `${available} créneau${available > 1 ? 'x' : ''} disponible${available > 1 ? 's' : ''}`
+        : 'Aucun créneau disponible ce soir';
+    }
+
+    function selectSlot(time) {
+      selectedSlot = time;
+      document.getElementById('slotSelectedTime').textContent = time;
+      document.getElementById('slotSelected').style.display = 'flex';
+      buildSlots();
+    }
+
+    function clearSlot() {
+      selectedSlot = null;
+      document.getElementById('slotSelected').style.display = 'none';
+      buildSlots();
+    }
+
     /* ── Menu data ── */
     const pizzas = [
       { name: "Marguerite",    price: 10, desc: "Tomate · Origan · Emmental" },
@@ -1146,22 +1390,24 @@
       if (!cart.length) {
         el.innerHTML = '<p style="color:var(--text-muted); font-size:14px; text-align:center; padding:20px 0;">Votre panier est vide — ajoutez des pizzas depuis la carte ci-dessus !</p>';
         totEl.style.display = 'none';
-        return;
-      }
-      totEl.style.display = 'flex';
-      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      totAmtEl.textContent = total.toFixed(2).replace('.', ',') + '€';
-      el.innerHTML = cart.map(i => `
-        <div class="cart-item">
-          <span class="cart-item-name">${i.name}</span>
-          <div class="cart-item-qty">
-            <button onclick="changeQty('${i.name}', -1)">−</button>
-            <span>${i.qty}</span>
-            <button onclick="changeQty('${i.name}', 1)">+</button>
+      } else {
+        totEl.style.display = 'flex';
+        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        totAmtEl.textContent = total.toFixed(2).replace('.', ',') + '€';
+        el.innerHTML = cart.map(i => `
+          <div class="cart-item">
+            <span class="cart-item-name">${i.name}</span>
+            <div class="cart-item-qty">
+              <button onclick="changeQty('${i.name}', -1)">−</button>
+              <span>${i.qty}</span>
+              <button onclick="changeQty('${i.name}', 1)">+</button>
+            </div>
+            <span class="cart-item-price">${(i.price * i.qty).toFixed(2).replace('.', ',')}€</span>
           </div>
-          <span class="cart-item-price">${(i.price * i.qty).toFixed(2).replace('.', ',')}€</span>
-        </div>
-      `).join('');
+        `).join('');
+      }
+      // Recalcule les créneaux selon le nombre de pizzas dans le panier
+      buildSlots();
     }
 
     function submitOrder() {
@@ -1183,6 +1429,7 @@
 
     /* ── Init ── */
     buildMenu();
+    buildSlots();
   </script>
 </body>
 </html>
