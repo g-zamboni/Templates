@@ -1909,8 +1909,9 @@
       if (!section) return;
       const count = cart.reduce((s,i) => s + i.qty, 0);
       if (count === 0) { fc.style.display = 'none'; return; }
-      const rect   = section.getBoundingClientRect();
-      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      const rect = section.getBoundingClientRect();
+      // Disparaît seulement quand le haut de la section passe sous le haut de l'écran
+      const inView = rect.top <= 80;
       if (inView) {
         cartForcedHidden = true;
         fc.classList.remove('visible');
