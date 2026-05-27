@@ -788,6 +788,19 @@
     }
     .slot-clear:hover { opacity: 1; }
 
+    .slot-empty {
+      width: 100%;
+      padding: 16px;
+      background: var(--surface);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      text-align: center;
+      border: 1.5px dashed var(--accent);
+    }
+    .slot-empty strong { color: var(--text); }
+
     .slot-separator {
       width: 100%;
       font-size: 10px;
@@ -1228,13 +1241,11 @@
     /* ── Sélecteur de créneaux ── */
 
     // Simulation des données (en WordPress ce sera chargé dynamiquement)
-    // Horaires : mercredi midi, vendredi soir, samedi midi+soir, dimanche soir
-    // On simule un mercredi soir avec quelques créneaux complets
-    const SLOT_DURATION   = 15;  // minutes
+    const SLOT_DURATION   = 15;  // minutes (paramétrable par le patron)
     const SLOT_MIN_DELAY  = 20;  // délai minimum de préparation en minutes
-    const SLOT_CAPACITY   = 8;   // pizzas max par créneau
+    const SLOT_CAPACITY   = 8;   // pizzas max par créneau (paramétrable par le patron)
 
-    // Créneaux simulés pour la démo (heure en minutes depuis minuit)
+    // Créneaux simulés pour la démo
     const simulatedSlots = [
       // Mercredi midi
       { time: '11:30', session: 'Midi',  load: 0 },
@@ -1266,22 +1277,28 @@
     }
 
     function buildSlots() {
-      const grid     = document.getElementById('slotGrid');
-      const header   = document.getElementById('slotSession');
+      const grid      = document.getElementById('slotGrid');
+      const header    = document.getElementById('slotSession');
       const cartCount = cart.reduce((s, i) => s + i.qty, 0);
 
-      // Heure actuelle simulée pour la démo : 18h50
-      // En WordPress ce sera : new Date()
-      const nowMinutes = 18 * 60 + 50;
+      // Heure réelle du navigateur
+      const now        = new Date();
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
       const minRetrait = nowMinutes + SLOT_MIN_DELAY;
 
       grid.innerHTML = '';
-      let lastSession = null;
+      let lastSession    = null;
+      let visibleCount   = 0;
+      let availableCount = 0;
 
       simulatedSlots.forEach(slot => {
-        const slotMin  = timeToMinutes(slot.time);
-        const isPast   = slotMin < minRetrait;
-        const isFull   = (slot.load + cartCount) > SLOT_CAPACITY;
+        const slotMin = timeToMinutes(slot.time);
+        const isPast  = slotMin < minRetrait;
+        const isFull  = (slot.load + cartCount) > SLOT_CAPACITY;
+
+        // On ne rend pas du tout les créneaux passés
+        if (isPast) return;
+        visibleCount++;
 
         // Séparateur de session
         if (slot.session !== lastSession) {
@@ -1297,27 +1314,35 @@
         btn.textContent = slot.time;
         btn.dataset.time = slot.time;
 
-        if (isPast) {
-          btn.className = 'slot-btn past';
-        } else if (isFull) {
+        if (isFull) {
           btn.className = 'slot-btn full';
-          btn.disabled = true;
+          btn.disabled  = true;
         } else {
+          availableCount++;
           btn.className = 'slot-btn available' + (selectedSlot === slot.time ? ' active' : '');
-          btn.onclick = () => selectSlot(slot.time);
+          btn.onclick   = () => selectSlot(slot.time);
         }
 
         grid.appendChild(btn);
       });
 
-      // Mise à jour du libellé header
-      const available = simulatedSlots.filter(s => {
-        const m = timeToMinutes(s.time);
-        return m >= minRetrait && (s.load + cartCount) < SLOT_CAPACITY;
-      }).length;
-      header.textContent = available > 0
-        ? `${available} créneau${available > 1 ? 'x' : ''} disponible${available > 1 ? 's' : ''}`
-        : 'Aucun créneau disponible ce soir';
+      // Message si aucun créneau visible ou disponible
+      if (visibleCount === 0) {
+        grid.innerHTML = `
+          <div class="slot-empty">
+            😴 La pizzeria est fermée pour le moment.<br>
+            Prochain service : <strong>ce soir à 18h30</strong>
+          </div>`;
+        header.textContent = 'Aucun créneau disponible';
+      } else if (availableCount === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'slot-empty';
+        emptyDiv.innerHTML = '😓 Tous les créneaux sont complets.<br>Appelez-nous au <strong>05.65.23.13.73</strong>';
+        grid.appendChild(emptyDiv);
+        header.textContent = 'Aucun créneau disponible';
+      } else {
+        header.textContent = `${availableCount} créneau${availableCount > 1 ? 'x' : ''} disponible${availableCount > 1 ? 's' : ''}`;
+      }
     }
 
     function selectSlot(time) {
