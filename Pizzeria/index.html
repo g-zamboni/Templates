@@ -1871,11 +1871,15 @@
       cartForcedHidden = true;
       fc.classList.remove('visible');
       fc.style.display = 'none';
-      const target = document.getElementById('commander');
-      target.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => {
-        document.getElementById('fieldPrenom').focus();
-      }, 700);
+      // Sur mobile, scroll vers le bloc fidélité ; sur desktop vers le formulaire
+      const isMobile = window.innerWidth <= 768;
+      const target = isMobile
+        ? document.getElementById('loginFidelityBlock')
+        : document.getElementById('commander');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!isMobile) {
+        setTimeout(() => document.getElementById('fieldPrenom').focus(), 700);
+      }
     }
 
     function updateFloatingCart() {
