@@ -660,6 +660,266 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* ─── Bloc fidélité ─── */
+    .fidelity-block {
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      border-radius: var(--section-radius);
+      padding: 24px 20px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+    }
+    .fidelity-icon {
+      font-size: 36px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .fidelity-title {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .fidelity-rule {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .fidelity-rule strong {
+      color: var(--primary);
+      font-size: 21px;
+      display: block;
+    }
+    .fidelity-detail {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .fidelity-progress {
+      width: 100%;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--bg2);
+    }
+    .fidelity-dots {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .fdot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--bg2);
+      border: 2px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      line-height: 1;
+    }
+    .fdot.filled {
+      background: #4a7c59;
+      border-color: #4a7c59;
+    }
+    /* Emoji pizza sur fond blanc pour contraste */
+    .fdot.filled::after {
+      content: '🍕';
+      font-size: 14px;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+    }
+    .fdot.gift {
+      background: var(--bg2);
+      border: 2px dashed var(--accent);
+      font-size: 15px;
+      width: 32px; height: 32px;
+    }
+    .fidelity-progress-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    @media (max-width: 480px) {
+      .fidelity-dots {
+        display: grid;
+        grid-template-columns: repeat(5, 28px);
+        justify-content: center;
+      }
+    }
+
+    /* ─── Bloc login fidélité dans le panier ─── */
+    .login-fidelity-block {
+      background: linear-gradient(135deg, #fffbf0, #fff8e8);
+      border: 1.5px solid var(--accent);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+    .login-fidelity-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+    .login-fidelity-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .login-fidelity-text strong {
+      color: var(--text);
+      font-size: 14px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .login-fidelity-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-login-small {
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-login-small:hover { opacity: 0.85; }
+    .btn-signup-small {
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1.5px solid var(--primary);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-signup-small:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-signup-small {
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1.5px solid var(--primary);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-signup-small:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ─── Formulaire login inline ─── */
+    .login-inline-form {
+      display: none;
+      width: 100%;
+      margin-top: 6px;
+      animation: slideDown 0.25s ease;
+    }
+    .login-inline-form.visible { display: block; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .login-inline-group { margin-bottom: 10px; }
+    .login-inline-group input {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .login-inline-group input:focus { border-color: var(--primary); }
+    .login-inline-remember {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+    .remember-label input[type="checkbox"] { display: none; }
+    .remember-box {
+      width: 18px; height: 18px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .remember-label input[type="checkbox"]:checked + .remember-box {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .remember-label input[type="checkbox"]:checked + .remember-box::after {
+      content: '✓';
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .forgot-link {
+      font-size: 12px;
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    .login-inline-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: center;
+    }
+    .login-cancel {
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .login-cancel:hover { color: var(--text); }
+
     /* ─── Sélecteur de créneaux ─── */
     .slot-picker {
       background: var(--bg);
@@ -1044,6 +1304,34 @@
       <div class="divider"></div>
       <div class="order-wrap">
         <div class="order-info">
+
+          <!-- Bloc fidélité -->
+          <div class="fidelity-block">
+            <div class="fidelity-icon">🎁</div>
+            <div class="fidelity-title">Programme fidélité</div>
+            <div class="fidelity-rule">
+              Achetez 10 pizzas
+              <strong>la 11<sup>e</sup> est offerte !</strong>
+            </div>
+            <div class="fidelity-detail">Pizza la moins chère du panier offerte</div>
+            <div class="fidelity-progress">
+              <div class="fidelity-dots">
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot"></span>
+                <span class="fdot"></span>
+                <span class="fdot"></span>
+                <span class="fdot gift">🎁</span>
+              </div>
+              <div class="fidelity-progress-label">Exemple : 7 / 10 — encore 3 pizzas pour une offerte !</div>
+            </div>
+          </div>
+
           <h3>Commandez, on prépare,<br />vous réglez sur place.</h3>
           <p>Choisissez vos pizzas, indiquez votre heure de retrait, et venez régler directement à la pizzeria. Simple, rapide, sans frais cachés.</p>
           <div class="info-block">
@@ -1093,6 +1381,42 @@
           <div class="notice-pay">
             <span>ℹ️</span>
             <span>Le règlement s'effectue <strong>uniquement en magasin</strong> lors du retrait de votre commande.</span>
+          </div>
+
+          <!-- Bloc connexion fidélité -->
+          <div class="login-fidelity-block" id="loginFidelityBlock">
+            <div class="login-fidelity-icon">⭐</div>
+            <div class="login-fidelity-text">
+              <strong>Cumulez des points fidélité !</strong>
+              <span>Identifiez-vous ou créez votre compte pour bénéficier de la carte de fidélité virtuelle.</span>
+            </div>
+            <div class="login-fidelity-btns" id="loginFidelityBtns">
+              <a href="#" class="btn-login-small" onclick="showLoginForm(event)">Se connecter</a>
+              <a href="#" class="btn-signup-small">Créer un compte</a>
+            </div>
+
+            <!-- Formulaire login inline (masqué par défaut) -->
+            <div class="login-inline-form" id="loginInlineForm">
+              <div class="login-inline-group">
+                <input type="email" placeholder="Adresse email" autocomplete="email" />
+              </div>
+              <div class="login-inline-group">
+                <input type="password" placeholder="Mot de passe" autocomplete="current-password" />
+              </div>
+              <div class="login-inline-remember">
+                <label class="remember-label">
+                  <input type="checkbox" id="rememberMe" />
+                  <span class="remember-box"></span>
+                  Se souvenir de moi
+                </label>
+                <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+              </div>
+              <div class="login-inline-actions">
+                <button type="button" class="btn-login-small" style="border:none;cursor:pointer;">Connexion</button>
+                <span class="login-cancel" onclick="hideLoginForm()">Annuler</span>
+              </div>
+            </div>
+
           </div>
 
           <div class="form-group">
@@ -1238,6 +1562,19 @@
 
   <!-- ─── JS ─── -->
   <script>
+    /* ── Login inline ── */
+    function showLoginForm(e) {
+      e.preventDefault();
+      document.getElementById('loginFidelityBtns').style.display = 'none';
+      const form = document.getElementById('loginInlineForm');
+      form.classList.add('visible');
+      form.querySelector('input[type="email"]').focus();
+    }
+    function hideLoginForm() {
+      document.getElementById('loginFidelityBtns').style.display = 'flex';
+      document.getElementById('loginInlineForm').classList.remove('visible');
+    }
+
     /* ── Sélecteur de créneaux ── */
 
     // Simulation des données (en WordPress ce sera chargé dynamiquement)
