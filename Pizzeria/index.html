@@ -1712,6 +1712,20 @@
   <!-- ─── JS ─── -->
   <script>
     /* ── Mini-panier flottant ── */
+    let cartForcedHidden = false;
+
+    function openFloatingCart() {
+      const fc = document.getElementById('floatingCart');
+      cartForcedHidden = true;
+      fc.classList.remove('visible');
+      fc.style.display = 'none';
+      const target = document.getElementById('commander');
+      target.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        document.getElementById('fieldPrenom').focus();
+      }, 700);
+    }
+
     function updateFloatingCart() {
       const fc      = document.getElementById('floatingCart');
       const badge   = document.getElementById('floatingCartBadge');
@@ -1722,30 +1736,43 @@
 
       if (count === 0) {
         fc.classList.remove('visible');
+        fc.style.display = 'none';
+        cartForcedHidden = false;
         return;
       }
       badge.textContent = count;
       total.textContent = amount.toFixed(2).replace('.', ',') + '€';
       label.textContent = count === 1 ? '1 pizza' : `${count} pizzas`;
-      fc.classList.add('visible');
+
+      // Si on n'est pas sur la section commander, montrer le panier
+      const section = document.getElementById('commander');
+      const rect = section.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView && !cartForcedHidden) {
+        fc.style.display = 'flex';
+        fc.classList.add('visible');
+      }
     }
 
-    function openFloatingCart() {
+    // Masque/affiche le panier flottant selon la position de la section commander
+    window.addEventListener('scroll', function() {
       const fc = document.getElementById('floatingCart');
-      // Masquage immédiat au clic
-      fc.classList.remove('visible');
-      // Sécurité : forcer le masquage après le scroll
-      setTimeout(() => fc.classList.remove('visible'), 100);
-      setTimeout(() => fc.classList.remove('visible'), 500);
-      setTimeout(() => fc.classList.remove('visible'), 1000);
-      const target = document.getElementById('commander');
-      target.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => {
-        document.getElementById('fieldPrenom').focus();
-      }, 700);
-    }
-
-    /* ── Menu data ── */
+      const section = document.getElementById('commander');
+      if (!section) return;
+      const count = cart.reduce((s,i) => s + i.qty, 0);
+      if (count === 0) { fc.style.display = 'none'; return; }
+      const rect = section.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (inView) {
+        cartForcedHidden = true;
+        fc.classList.remove('visible');
+        fc.style.display = 'none';
+      } else {
+        cartForcedHidden = false;
+        fc.style.display = 'flex';
+        fc.classList.add('visible');
+      }
+    }, { passive: true });
     function showLoginForm(e) {
       e.preventDefault();
       document.getElementById('loginFidelityBtns').style.display = 'none';
@@ -1980,19 +2007,6 @@
 
     // Masque/affiche le panier flottant selon la position de la section commander
     window.addEventListener('scroll', function() {
-      const fc = document.getElementById('floatingCart');
-      const section = document.getElementById('commander');
-      if (!section) return;
-      const count = cart.reduce((s,i) => s + i.qty, 0);
-      if (count === 0) { fc.classList.remove('visible'); return; }
-      const rect = section.getBoundingClientRect();
-      const inView = rect.top < window.innerHeight && rect.bottom > 0;
-      if (inView) {
-        fc.classList.remove('visible');
-      } else {
-        fc.classList.add('visible');
-      }
-    }, { passive: true });
   </script>
 </body>
 </html>
