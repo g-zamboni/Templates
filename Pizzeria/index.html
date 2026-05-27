@@ -316,6 +316,53 @@
       font-weight: 400;
     }
 
+    .pizza-mois-pricing {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 20px;
+    }
+    .pizza-mois-promo-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 30px;
+      width: fit-content;
+      animation: pulse-badge 2s infinite;
+    }
+    @keyframes pulse-badge {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(184,59,30,0.4); }
+      50%       { box-shadow: 0 0 0 8px rgba(184,59,30,0); }
+    }
+    .pizza-mois-prices {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .pizza-mois-price-old {
+      font-family: var(--font-head);
+      font-size: 24px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    .pizza-mois-price-new {
+      font-family: var(--font-head);
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .pizza-mois-price-detail {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
     /* ─── Menu ─── */
     .menu-section { background: var(--surface); transition: background 0.5s; }
     .menu-grid {
@@ -1372,9 +1419,16 @@
             <span class="ingr-tag">🌰 Noix</span>
             <span class="ingr-tag">🧀 Emmental</span>
           </div>
-          <div class="pizza-mois-price">15,00€ <span>· taille 32 cm · TTC</span></div>
-          <br /><br />
-          <a href="#commander" class="btn btn-primary" onclick="addToCart('La Quercynoise', 15)">Ajouter au panier</a>
+          <div class="pizza-mois-pricing">
+            <div class="pizza-mois-promo-badge">Offre du mois</div>
+            <div class="pizza-mois-prices">
+              <span class="pizza-mois-price-old">15,00€</span>
+              <span class="pizza-mois-price-new">12,00€</span>
+            </div>
+            <div class="pizza-mois-price-detail">· taille 32 cm · TTC</div>
+          </div>
+          <br />
+          <button class="btn btn-primary" onclick="addToCart('La Quercynoise', 12)">Ajouter au panier</button>
         </div>
       </div>
     </div>
@@ -1919,19 +1973,18 @@
     buildMenu();
     buildSlots();
 
-    // Masque le panier flottant quand la section commander est visible
-    const commanderSection = document.getElementById('commander');
-    if (commanderSection && 'IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(entries => {
-        const fc = document.getElementById('floatingCart');
-        if (entries[0].isIntersecting) {
-          fc.classList.remove('visible');
-        } else if (cart.reduce((s,i) => s + i.qty, 0) > 0) {
-          fc.classList.add('visible');
-        }
-      }, { threshold: 0.2 });
-      observer.observe(commanderSection);
-    }
+    // Masque/affiche le panier flottant selon la position de la section commander
+    window.addEventListener('scroll', function() {
+      const fc = document.getElementById('floatingCart');
+      const section = document.getElementById('commander');
+      if (!section || cart.reduce((s,i) => s + i.qty, 0) === 0) return;
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        fc.classList.remove('visible');
+      } else {
+        fc.classList.add('visible');
+      }
+    }, { passive: true });
   </script>
 </body>
 </html>
