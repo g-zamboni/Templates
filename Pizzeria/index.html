@@ -168,6 +168,17 @@
       color: #fff;
       margin-left: 12px;
     }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      .btn-outline { margin-left: 0; }
+      .hero-btns { flex-direction: column; align-items: center; gap: 14px; }
+      .hero-btns .btn { width: 80%; text-align: center; }
+    }
     .hero-scroll {
       position: absolute;
       bottom: 30px;
@@ -303,6 +314,53 @@
       color: var(--text-muted);
       font-family: var(--font-body);
       font-weight: 400;
+    }
+
+    .pizza-mois-pricing {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 20px;
+    }
+    .pizza-mois-promo-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 30px;
+      width: fit-content;
+      animation: pulse-badge 2s infinite;
+    }
+    @keyframes pulse-badge {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(184,59,30,0.4); }
+      50%       { box-shadow: 0 0 0 8px rgba(184,59,30,0); }
+    }
+    .pizza-mois-prices {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .pizza-mois-price-old {
+      font-family: var(--font-head);
+      font-size: 24px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    .pizza-mois-price-new {
+      font-family: var(--font-head);
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .pizza-mois-price-detail {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
     /* ─── Menu ─── */
@@ -644,9 +702,10 @@
     /* ─── Toast notification ─── */
     .toast {
       position: fixed;
-      bottom: 30px;
+      bottom: 100px;
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
+      transform: translateX(-50%) translateY(160px);
+      opacity: 0;
       background: var(--text);
       color: #fff;
       padding: 14px 28px;
@@ -655,10 +714,488 @@
       font-weight: 700;
       box-shadow: 0 8px 30px rgba(0,0,0,0.25);
       z-index: 9999;
-      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), opacity 0.4s;
       pointer-events: none;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ─── Bloc fidélité ─── */
+    .fidelity-block {
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      border-radius: var(--section-radius);
+      padding: 24px 20px 20px;
+      margin-bottom: 28px;
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+    }
+    .fidelity-icon {
+      font-size: 36px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .fidelity-title {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .fidelity-rule {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .fidelity-rule strong {
+      color: var(--primary);
+      font-size: 21px;
+      display: block;
+    }
+    .fidelity-detail {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .fidelity-progress {
+      width: 100%;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--bg2);
+    }
+    .fidelity-dots {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .fdot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--bg2);
+      border: 2px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      line-height: 1;
+    }
+    .fdot.filled {
+      background: #4a7c59;
+      border-color: #4a7c59;
+    }
+    /* Emoji pizza sur fond blanc pour contraste */
+    .fdot.filled::after {
+      content: '🍕';
+      font-size: 14px;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+    }
+    .fdot.gift {
+      background: var(--bg2);
+      border: 2px dashed var(--accent);
+      font-size: 15px;
+      width: 32px; height: 32px;
+    }
+    .fidelity-progress-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    @media (max-width: 480px) {
+      .fidelity-dots {
+        display: grid;
+        grid-template-columns: repeat(5, 28px);
+        justify-content: center;
+      }
+    }
+
+    /* ─── Bloc login fidélité dans le panier ─── */
+    .login-fidelity-block {
+      background: linear-gradient(135deg, #fffbf0, #fff8e8);
+      border: 1.5px solid var(--accent);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+    .login-fidelity-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+    .login-fidelity-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .login-fidelity-text strong {
+      color: var(--text);
+      font-size: 14px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .login-fidelity-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-login-small {
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-login-small:hover { opacity: 0.85; }
+    .btn-signup-small {
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1.5px solid var(--primary);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-signup-small:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-signup-small {
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1.5px solid var(--primary);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-signup-small:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ─── Formulaire login inline ─── */
+    .login-inline-form {
+      display: none;
+      width: 100%;
+      margin-top: 6px;
+      animation: slideDown 0.25s ease;
+    }
+    .login-inline-form.visible { display: block; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .login-inline-group { margin-bottom: 10px; }
+    .login-inline-group input {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .login-inline-group input:focus { border-color: var(--primary); }
+    .login-inline-remember {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+    .remember-label input[type="checkbox"] { display: none; }
+    .remember-box {
+      width: 18px; height: 18px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .remember-label input[type="checkbox"]:checked + .remember-box {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .remember-label input[type="checkbox"]:checked + .remember-box::after {
+      content: '✓';
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .forgot-link {
+      font-size: 12px;
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    .login-inline-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: center;
+    }
+    .login-cancel {
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .login-cancel:hover { color: var(--text); }
+
+    /* ─── Sélecteur de créneaux ─── */
+    .slot-picker {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1.5px solid transparent;
+    }
+    .slot-picker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .slot-session {
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .slot-legend {
+      display: flex;
+      gap: 12px;
+    }
+    .slot-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .slot-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .slot-dot.available { background: #4a7c59; }
+    .slot-dot.full      { background: #ccc; }
+
+    .slot-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .slot-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .slot-btn.available {
+      background: var(--surface);
+      border-color: rgba(74,124,89,0.3);
+      color: var(--text);
+    }
+    .slot-btn.available:hover {
+      background: #4a7c59;
+      border-color: #4a7c59;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .slot-btn.active {
+      background: #4a7c59;
+      border-color: #4a7c59;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(74,124,89,0.35);
+    }
+    .slot-btn.full {
+      background: var(--bg2);
+      border-color: transparent;
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+    .slot-btn.past {
+      display: none;
+    }
+    /* Tooltip "Complet" au survol */
+    .slot-btn.full::after {
+      content: 'Complet';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+    }
+    .slot-btn.full:hover::after { opacity: 1; }
+
+    .slot-selected {
+      margin-top: 12px;
+      background: rgba(74,124,89,0.1);
+      border: 1.5px solid #4a7c59;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #4a7c59;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .slot-clear {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: underline;
+      opacity: 0.7;
+    }
+    .slot-clear:hover { opacity: 1; }
+
+    .slot-empty {
+      width: 100%;
+      padding: 16px;
+      background: var(--surface);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      text-align: center;
+      border: 1.5px dashed var(--accent);
+    }
+    .slot-empty strong { color: var(--text); }
+
+    .slot-separator {
+      width: 100%;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 4px 0 2px;
+    }
+
+    /* ─── Mini-panier flottant ─── */
+    .floating-cart {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      z-index: 500;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50px;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(184,59,30,0.45);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+      white-space: nowrap;
+      min-width: 220px;
+      justify-content: center;
+    }
+    .floating-cart.visible {
+      transform: translateX(-50%) translateY(0);
+    }
+    .floating-cart:hover {
+      box-shadow: 0 12px 40px rgba(184,59,30,0.55);
+      transform: translateX(-50%) translateY(-3px);
+    }
+    .floating-cart-icon {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .floating-cart-icon svg {
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+    }
+    .floating-cart-label {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+    .floating-cart-badge {
+      background: #fff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .floating-cart-total {
+      font-weight: 700;
+      font-size: 15px;
+      opacity: 0.9;
+    }
+    .floating-cart-arrow {
+      font-size: 16px;
+      opacity: 0.7;
+    }
 
     /* ─── Responsive ─── */
     @media (max-width: 768px) {
@@ -672,21 +1209,6 @@
       .form-row { grid-template-columns: 1fr; }
     }
 
-    /* ─── Hamburger ─── */
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 40px;
-      height: 40px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 10px;
-      cursor: pointer;
-      padding: 8px;
-      z-index: 200;
-    }
     /* ─── Hamburger 100% CSS ─── */
     #nav-toggle { display: none; }
 
@@ -804,6 +1326,19 @@
   <!-- ─── Toast ─── -->
   <div class="toast" id="toast"></div>
 
+  <!-- ─── Mini-panier flottant ─── -->
+  <div class="floating-cart" id="floatingCart" onclick="openFloatingCart()">
+    <span class="floating-cart-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 3M7 13l-2 5h12M9 21a1 1 0 100-2 1 1 0 000 2zm10 0a1 1 0 100-2 1 1 0 000 2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </span>
+    <span class="floating-cart-label" id="floatingCartLabel">Mon panier</span>
+    <span class="floating-cart-badge" id="floatingCartBadge">0</span>
+    <span class="floating-cart-total" id="floatingCartTotal"></span>
+    <span class="floating-cart-arrow">→</span>
+  </div>
+
   <!-- Checkbox cachée – moteur du menu mobile -->
   <input type="checkbox" id="nav-toggle" />
 
@@ -845,8 +1380,10 @@
         <span class="badge">🌞 Terrasse</span>
         <span class="badge">📞 Réservation</span>
       </div>
-      <a href="#commander" class="btn btn-primary">Commander en ligne</a>
-      <a href="#menu" class="btn btn-outline">Voir la carte</a>
+      <div class="hero-btns">
+        <a href="#menu" class="btn btn-primary">Commander en ligne</a>
+        <a href="#menu" class="btn btn-outline">Voir la carte</a>
+      </div>
     </div>
     <div class="hero-scroll">↓ &nbsp; Découvrir</div>
   </section>
@@ -882,9 +1419,16 @@
             <span class="ingr-tag">🌰 Noix</span>
             <span class="ingr-tag">🧀 Emmental</span>
           </div>
-          <div class="pizza-mois-price">15,00€ <span>· taille 32 cm · TTC</span></div>
-          <br /><br />
-          <a href="#commander" class="btn btn-primary" onclick="addToCart('La Quercynoise', 15)">Ajouter au panier</a>
+          <div class="pizza-mois-pricing">
+            <div class="pizza-mois-promo-badge">Offre du mois</div>
+            <div class="pizza-mois-prices">
+              <span class="pizza-mois-price-old">15,00€</span>
+              <span class="pizza-mois-price-new">12,00€</span>
+            </div>
+            <div class="pizza-mois-price-detail">· taille 32 cm · TTC</div>
+          </div>
+          <br />
+          <button class="btn btn-primary" onclick="addToCart('La Quercynoise', 12)">Ajouter au panier</button>
         </div>
       </div>
     </div>
@@ -908,6 +1452,7 @@
       <div class="divider"></div>
       <div class="order-wrap">
         <div class="order-info">
+
           <h3>Commandez, on prépare,<br />vous réglez sur place.</h3>
           <p>Choisissez vos pizzas, indiquez votre heure de retrait, et venez régler directement à la pizzeria. Simple, rapide, sans frais cachés.</p>
           <div class="info-block">
@@ -940,6 +1485,34 @@
               </div>
             </div>
           </div>
+
+          <!-- Bloc fidélité -->
+          <div class="fidelity-block">
+            <div class="fidelity-icon">🎁</div>
+            <div class="fidelity-title">Programme fidélité</div>
+            <div class="fidelity-rule">
+              Achetez 10 pizzas
+              <strong>la 11<sup>e</sup> est offerte !</strong>
+            </div>
+            <div class="fidelity-detail">(Pizza la moins chère du panier offerte)</div>
+            <div class="fidelity-progress">
+              <div class="fidelity-dots">
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot filled"></span>
+                <span class="fdot"></span>
+                <span class="fdot"></span>
+                <span class="fdot"></span>
+                <span class="fdot gift">🎁</span>
+              </div>
+              <div class="fidelity-progress-label">Exemple : 7 / 10 — encore 3 pizzas pour une offerte !</div>
+            </div>
+          </div>
+
         </div>
 
         <div class="order-form-card">
@@ -959,20 +1532,69 @@
             <span>Le règlement s'effectue <strong>uniquement en magasin</strong> lors du retrait de votre commande.</span>
           </div>
 
+          <!-- Bloc connexion fidélité -->
+          <div class="login-fidelity-block" id="loginFidelityBlock">
+            <div class="login-fidelity-icon">⭐</div>
+            <div class="login-fidelity-text">
+              <strong>Cumulez des points fidélité !</strong>
+              <span>Identifiez-vous ou créez votre compte pour bénéficier de la carte de fidélité virtuelle.</span>
+            </div>
+            <div class="login-fidelity-btns" id="loginFidelityBtns">
+              <a href="#" class="btn-login-small" onclick="showLoginForm(event)">Se connecter</a>
+              <a href="#" class="btn-signup-small">Créer un compte</a>
+            </div>
+
+            <!-- Formulaire login inline (masqué par défaut) -->
+            <div class="login-inline-form" id="loginInlineForm">
+              <div class="login-inline-group">
+                <input type="email" placeholder="Adresse email" autocomplete="email" />
+              </div>
+              <div class="login-inline-group">
+                <input type="password" placeholder="Mot de passe" autocomplete="current-password" />
+              </div>
+              <div class="login-inline-remember">
+                <label class="remember-label">
+                  <input type="checkbox" id="rememberMe" />
+                  <span class="remember-box"></span>
+                  Se souvenir de moi
+                </label>
+                <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+              </div>
+              <div class="login-inline-actions">
+                <button type="button" class="btn-login-small" style="border:none;cursor:pointer;">Connexion</button>
+                <span class="login-cancel" onclick="hideLoginForm()">Annuler</span>
+              </div>
+            </div>
+
+          </div>
+
           <div class="form-group">
             <label>Votre prénom</label>
-            <input type="text" placeholder="Ex : Marie" />
+            <input type="text" id="fieldPrenom" placeholder="Ex : Marie" />
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Téléphone</label>
-              <input type="tel" placeholder="06 xx xx xx xx" />
-            </div>
-            <div class="form-group">
-              <label>Heure de retrait</label>
-              <input type="time" min="11:30" max="21:00" />
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" id="fieldTel" placeholder="06 xx xx xx xx" />
+          </div>
+
+          <div class="form-group">
+            <label>Heure de retrait</label>
+            <div class="slot-picker" id="slotPicker">
+              <div class="slot-picker-header">
+                <span class="slot-session" id="slotSession">Choisissez une heure</span>
+                <span class="slot-legend">
+                  <span class="slot-legend-item"><span class="slot-dot available"></span>Disponible</span>
+                  <span class="slot-legend-item"><span class="slot-dot full"></span>Complet</span>
+                </span>
+              </div>
+              <div class="slot-grid" id="slotGrid"></div>
+              <div class="slot-selected" id="slotSelected" style="display:none">
+                ✓ Retrait à <strong id="slotSelectedTime"></strong>
+                <span onclick="clearSlot()" class="slot-clear">Modifier</span>
+              </div>
             </div>
           </div>
+
           <div class="form-group">
             <label>Remarques / allergies</label>
             <textarea placeholder="Ex : sans oignons, allergie cacahuètes…"></textarea>
@@ -1089,6 +1711,138 @@
 
   <!-- ─── JS ─── -->
   <script>
+    function showLoginForm(e) {
+      e.preventDefault();
+      document.getElementById('loginFidelityBtns').style.display = 'none';
+      const form = document.getElementById('loginInlineForm');
+      form.classList.add('visible');
+      form.querySelector('input[type="email"]').focus();
+    }
+    function hideLoginForm() {
+      document.getElementById('loginFidelityBtns').style.display = 'flex';
+      document.getElementById('loginInlineForm').classList.remove('visible');
+    }
+
+    /* ── Sélecteur de créneaux ── */
+
+    // Simulation des données (en WordPress ce sera chargé dynamiquement)
+    const SLOT_DURATION   = 15;  // minutes (paramétrable par le patron)
+    const SLOT_MIN_DELAY  = 20;  // délai minimum de préparation en minutes
+    const SLOT_CAPACITY   = 8;   // pizzas max par créneau (paramétrable par le patron)
+
+    // Créneaux simulés pour la démo
+    const simulatedSlots = [
+      // Mercredi midi
+      { time: '11:30', session: 'Midi',  load: 0 },
+      { time: '11:45', session: 'Midi',  load: 2 },
+      { time: '12:00', session: 'Midi',  load: 5 },
+      { time: '12:15', session: 'Midi',  load: 8 },  // complet
+      { time: '12:30', session: 'Midi',  load: 7 },
+      { time: '12:45', session: 'Midi',  load: 3 },
+      { time: '13:00', session: 'Midi',  load: 1 },
+      { time: '13:15', session: 'Midi',  load: 0 },
+      // Mercredi soir
+      { time: '18:30', session: 'Soir',  load: 0 },
+      { time: '18:45', session: 'Soir',  load: 4 },
+      { time: '19:00', session: 'Soir',  load: 8 },  // complet
+      { time: '19:15', session: 'Soir',  load: 8 },  // complet
+      { time: '19:30', session: 'Soir',  load: 6 },
+      { time: '19:45', session: 'Soir',  load: 2 },
+      { time: '20:00', session: 'Soir',  load: 0 },
+      { time: '20:15', session: 'Soir',  load: 0 },
+      { time: '20:30', session: 'Soir',  load: 1 },
+      { time: '20:45', session: 'Soir',  load: 0 },
+    ];
+
+    let selectedSlot = null;
+
+    function timeToMinutes(t) {
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function buildSlots() {
+      const grid      = document.getElementById('slotGrid');
+      const header    = document.getElementById('slotSession');
+      const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+
+      // Heure réelle du navigateur
+      const now        = new Date();
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+      const minRetrait = nowMinutes + SLOT_MIN_DELAY;
+
+      grid.innerHTML = '';
+      let lastSession    = null;
+      let visibleCount   = 0;
+      let availableCount = 0;
+
+      simulatedSlots.forEach(slot => {
+        const slotMin = timeToMinutes(slot.time);
+        const isPast  = slotMin < minRetrait;
+        const isFull  = (slot.load + cartCount) > SLOT_CAPACITY;
+
+        // On ne rend pas du tout les créneaux passés
+        if (isPast) return;
+        visibleCount++;
+
+        // Séparateur de session
+        if (slot.session !== lastSession) {
+          const sep = document.createElement('div');
+          sep.className = 'slot-separator';
+          sep.textContent = slot.session;
+          grid.appendChild(sep);
+          lastSession = slot.session;
+        }
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = slot.time;
+        btn.dataset.time = slot.time;
+
+        if (isFull) {
+          btn.className = 'slot-btn full';
+          btn.disabled  = true;
+        } else {
+          availableCount++;
+          btn.className = 'slot-btn available' + (selectedSlot === slot.time ? ' active' : '');
+          btn.onclick   = () => selectSlot(slot.time);
+        }
+
+        grid.appendChild(btn);
+      });
+
+      // Message si aucun créneau visible ou disponible
+      if (visibleCount === 0) {
+        grid.innerHTML = `
+          <div class="slot-empty">
+            😴 La pizzeria est fermée pour le moment.<br>
+            Prochain service : <strong>ce soir à 18h30</strong>
+          </div>`;
+        header.textContent = 'Aucun créneau disponible';
+      } else if (availableCount === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'slot-empty';
+        emptyDiv.innerHTML = '😓 Tous les créneaux sont complets.<br>Appelez-nous au <strong>05.65.23.13.73</strong>';
+        grid.appendChild(emptyDiv);
+        header.textContent = 'Aucun créneau disponible';
+      } else {
+        header.textContent = `${availableCount} créneau${availableCount > 1 ? 'x' : ''} disponible${availableCount > 1 ? 's' : ''}`;
+      }
+    }
+
+    function selectSlot(time) {
+      selectedSlot = time;
+      document.getElementById('slotSelectedTime').textContent = time;
+      document.getElementById('slotSelected').style.display = 'flex';
+      buildSlots();
+    }
+
+    function clearSlot() {
+      selectedSlot = null;
+      document.getElementById('slotSelected').style.display = 'none';
+      buildSlots();
+    }
+
     /* ── Menu data ── */
     const pizzas = [
       { name: "Marguerite",    price: 10, desc: "Tomate · Origan · Emmental" },
@@ -1109,6 +1863,67 @@
     /* ── Cart ── */
     let cart = [];
 
+    /* ── Mini-panier flottant ── */
+    let cartForcedHidden = false;
+
+    function openFloatingCart() {
+      const fc = document.getElementById('floatingCart');
+      cartForcedHidden = true;
+      fc.classList.remove('visible');
+      fc.style.display = 'none';
+      const target = document.getElementById('commander');
+      target.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        document.getElementById('fieldPrenom').focus();
+      }, 700);
+    }
+
+    function updateFloatingCart() {
+      const fc     = document.getElementById('floatingCart');
+      const badge  = document.getElementById('floatingCartBadge');
+      const total  = document.getElementById('floatingCartTotal');
+      const label  = document.getElementById('floatingCartLabel');
+      const count  = cart.reduce((s, i) => s + i.qty, 0);
+      const amount = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      if (count === 0) {
+        fc.classList.remove('visible');
+        fc.style.display = 'none';
+        cartForcedHidden = false;
+        return;
+      }
+      badge.textContent = count;
+      total.textContent = amount.toFixed(2).replace('.', ',') + '€';
+      label.textContent = count === 1 ? '1 pizza' : `${count} pizzas`;
+      // Affiche toujours si la section commander n'est pas encore atteinte
+      const section = document.getElementById('commander');
+      const rect    = section.getBoundingClientRect();
+      if (rect.top > 80) {
+        cartForcedHidden = false;
+        fc.style.display = 'flex';
+        fc.classList.add('visible');
+      }
+    }
+
+    window.addEventListener('scroll', function() {
+      const fc      = document.getElementById('floatingCart');
+      const section = document.getElementById('commander');
+      if (!section) return;
+      const count = cart.reduce((s,i) => s + i.qty, 0);
+      if (count === 0) { fc.style.display = 'none'; return; }
+      const rect = section.getBoundingClientRect();
+      // Disparaît seulement quand le haut de la section passe sous le haut de l'écran
+      const inView = rect.top <= 80;
+      if (inView) {
+        cartForcedHidden = true;
+        fc.classList.remove('visible');
+        fc.style.display = 'none';
+      } else {
+        cartForcedHidden = false;
+        fc.style.display = 'flex';
+        fc.classList.add('visible');
+      }
+    }, { passive: true });
+
     function buildMenu() {
       const grid = document.getElementById('menuGrid');
       grid.innerHTML = pizzas.map(p => `
@@ -1128,7 +1943,7 @@
       if (ex) ex.qty++;
       else cart.push({ name, price, qty: 1 });
       renderCart();
-      showToast(`🍕 ${name} ajouté au panier !`);
+      showToast(`🍕 ${name} ajoutée au panier !`);
     }
 
     function changeQty(name, delta) {
@@ -1146,22 +1961,26 @@
       if (!cart.length) {
         el.innerHTML = '<p style="color:var(--text-muted); font-size:14px; text-align:center; padding:20px 0;">Votre panier est vide — ajoutez des pizzas depuis la carte ci-dessus !</p>';
         totEl.style.display = 'none';
-        return;
-      }
-      totEl.style.display = 'flex';
-      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      totAmtEl.textContent = total.toFixed(2).replace('.', ',') + '€';
-      el.innerHTML = cart.map(i => `
-        <div class="cart-item">
-          <span class="cart-item-name">${i.name}</span>
-          <div class="cart-item-qty">
-            <button onclick="changeQty('${i.name}', -1)">−</button>
-            <span>${i.qty}</span>
-            <button onclick="changeQty('${i.name}', 1)">+</button>
+      } else {
+        totEl.style.display = 'flex';
+        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        totAmtEl.textContent = total.toFixed(2).replace('.', ',') + '€';
+        el.innerHTML = cart.map(i => `
+          <div class="cart-item">
+            <span class="cart-item-name">${i.name}</span>
+            <div class="cart-item-qty">
+              <button onclick="changeQty('${i.name}', -1)">−</button>
+              <span>${i.qty}</span>
+              <button onclick="changeQty('${i.name}', 1)">+</button>
+            </div>
+            <span class="cart-item-price">${(i.price * i.qty).toFixed(2).replace('.', ',')}€</span>
           </div>
-          <span class="cart-item-price">${(i.price * i.qty).toFixed(2).replace('.', ',')}€</span>
-        </div>
-      `).join('');
+        `).join('');
+      }
+      // Recalcule les créneaux selon le nombre de pizzas dans le panier
+      buildSlots();
+      // Met à jour le mini-panier flottant
+      updateFloatingCart();
     }
 
     function submitOrder() {
@@ -1183,6 +2002,7 @@
 
     /* ── Init ── */
     buildMenu();
+    buildSlots();
   </script>
 </body>
 </html>
