@@ -1677,6 +1677,8 @@
     }
 
     function openFloatingCart() {
+      const fc = document.getElementById('floatingCart');
+      fc.classList.remove('visible');
       const target = document.getElementById('commander');
       target.scrollIntoView({ behavior: 'smooth' });
       setTimeout(() => {
