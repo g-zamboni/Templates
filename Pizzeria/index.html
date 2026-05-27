@@ -1515,7 +1515,7 @@
 
         </div>
 
-        <div class="order-form-card">
+        <div class="order-form-card" id="orderFormCard">
           <div class="order-form-title">🛒 Votre panier</div>
           <div class="cart-items" id="cartItems">
             <p style="color:var(--text-muted); font-size:14px; text-align:center; padding:20px 0;">
@@ -1874,7 +1874,7 @@
       // Sur mobile, scroll vers le bloc fidélité ; sur desktop vers le formulaire
       const isMobile = window.innerWidth <= 768;
       const target = isMobile
-        ? document.getElementById('loginFidelityBlock')
+        ? document.getElementById('orderFormCard')
         : document.getElementById('commander');
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       if (!isMobile) {
